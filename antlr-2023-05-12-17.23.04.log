@@ -1,0 +1,98 @@
+2023-05-12 17:23:03:811 grammar LogManager.java:25 before: (COMBINED_GRAMMAR Splikit (RULES (RULE program (BLOCK (ALT (* (BLOCK (ALT statement)))))) (RULE statement (BLOCK (ALT variableDeclaration) (ALT functionDeclaration) (ALT ifStatement) (ALT whileStatement) (ALT importStatement) (ALT enumDeclaration) (ALT classDeclaration) (ALT expression))) (RULE variableDeclaration (BLOCK (ALT Identifier '=' expression))) (RULE functionDeclaration (BLOCK (ALT 'func' Identifier '(' (? (BLOCK (ALT parameterList))) ')' '{' (* (BLOCK (ALT statement))) '}') (ALT Identifier '(' (? (BLOCK (ALT parameterList))) ')' '=>' '{' (* (BLOCK (ALT statement))) '}'))) (RULE enumDeclaration (BLOCK (ALT 'enum' Identifier '{' (* (BLOCK (ALT variableDeclaration))) '}'))) (RULE classDeclaration (BLOCK (ALT 'class' Identifier '{' (* (BLOCK (ALT statement))) '}'))) (RULE functionCall (BLOCK (ALT Identifier '(' (? (BLOCK (ALT argumentList))) ')'))) (RULE ifStatement (BLOCK (ALT 'if' expression '{' (* (BLOCK (ALT statement))) '}' (? (BLOCK (ALT 'else' '{' (* (BLOCK (ALT statement))) '}')))))) (RULE importStatement (BLOCK (ALT 'import' StringLiteral))) (RULE whileStatement (BLOCK (ALT 'while' expression '{' (* (BLOCK (ALT statement))) '}'))) (RULE parameterList (BLOCK (ALT Identifier (* (BLOCK (ALT ',' Identifier)))))) (RULE argumentList (BLOCK (ALT expression (* (BLOCK (ALT ',' expression)))))) (RULE getAttr (BLOCK (ALT primaryExpression '.' Identifier (? (BLOCK (ALT '(' (? (BLOCK (ALT argumentList))) ')')))))) (RULE expression (BLOCK (ALT getAttr) (ALT primaryExpression (* (BLOCK (ALT operator expression)))) (ALT '!' primaryExpression))) (RULE primaryExpression (BLOCK (ALT '(' expression ')') (ALT functionCall) (ALT atomExpression))) (RULE atomExpression (BLOCK (ALT IntegerLiteral) (ALT DecimalLiteral) (ALT StringLiteral) (ALT BooleanLiteral) (ALT NilLiteral) (ALT Identifier) (ALT '{' (? (BLOCK (ALT argumentList))) '}'))) (RULE operator (BLOCK (ALT '+') (ALT '-') (ALT '*') (ALT '/') (ALT '%') (ALT '==') (ALT '!=') (ALT '<') (ALT '>') (ALT '<=') (ALT '>=') (ALT '&') (ALT '|'))) (RULE IntegerLiteral (BLOCK (ALT (+ (BLOCK (ALT Digit)))))) (RULE DecimalLiteral (BLOCK (ALT (+ (BLOCK (ALT Digit))) '.' (+ (BLOCK (ALT Digit)))))) (RULE Apostrophe (BLOCK (ALT '\''))) (RULE StringLiteral (BLOCK (ALT '"' (* (BLOCK (ALT .))) '"') (ALT Apostrophe (* (BLOCK (ALT .))) Apostrophe))) (RULE BooleanLiteral (BLOCK (ALT 'true') (ALT 'false'))) (RULE NilLiteral (BLOCK (ALT 'nil'))) (RULE Comment (BLOCK (LEXER_ALT_ACTION (ALT '//' (* (BLOCK (ALT (~ (SET [\r\n])))))) skip))) (RULE MultiLineComment (BLOCK (LEXER_ALT_ACTION (ALT '/*' (* (BLOCK (ALT .))) '*/') skip))) (RULE Identifier (BLOCK (ALT [a-zA-Z_] (* (BLOCK (ALT [a-zA-Z_0-9])))))) (RULE Digit (BLOCK (ALT [0-9]))) (RULE Whitespace (BLOCK (LEXER_ALT_ACTION (ALT [ \t\n\r]) skip)))))
+2023-05-12 17:23:03:842 grammar LogManager.java:25 after: (COMBINED_GRAMMAR Splikit (RULES (RULE program (BLOCK (ALT (* (BLOCK (ALT statement)))))) (RULE statement (BLOCK (ALT variableDeclaration) (ALT functionDeclaration) (ALT ifStatement) (ALT whileStatement) (ALT importStatement) (ALT enumDeclaration) (ALT classDeclaration) (ALT expression))) (RULE variableDeclaration (BLOCK (ALT Identifier '=' expression))) (RULE functionDeclaration (BLOCK (ALT 'func' Identifier '(' (? (BLOCK (ALT parameterList))) ')' '{' (* (BLOCK (ALT statement))) '}') (ALT Identifier '(' (? (BLOCK (ALT parameterList))) ')' '=>' '{' (* (BLOCK (ALT statement))) '}'))) (RULE enumDeclaration (BLOCK (ALT 'enum' Identifier '{' (* (BLOCK (ALT variableDeclaration))) '}'))) (RULE classDeclaration (BLOCK (ALT 'class' Identifier '{' (* (BLOCK (ALT statement))) '}'))) (RULE functionCall (BLOCK (ALT Identifier '(' (? (BLOCK (ALT argumentList))) ')'))) (RULE ifStatement (BLOCK (ALT 'if' expression '{' (* (BLOCK (ALT statement))) '}' (? (BLOCK (ALT 'else' '{' (* (BLOCK (ALT statement))) '}')))))) (RULE importStatement (BLOCK (ALT 'import' StringLiteral))) (RULE whileStatement (BLOCK (ALT 'while' expression '{' (* (BLOCK (ALT statement))) '}'))) (RULE parameterList (BLOCK (ALT Identifier (* (BLOCK (ALT ',' Identifier)))))) (RULE argumentList (BLOCK (ALT expression (* (BLOCK (ALT ',' expression)))))) (RULE getAttr (BLOCK (ALT primaryExpression '.' Identifier (? (BLOCK (ALT '(' (? (BLOCK (ALT argumentList))) ')')))))) (RULE expression (BLOCK (ALT getAttr) (ALT primaryExpression (* (BLOCK (ALT operator expression)))) (ALT '!' primaryExpression))) (RULE primaryExpression (BLOCK (ALT '(' expression ')') (ALT functionCall) (ALT atomExpression))) (RULE atomExpression (BLOCK (ALT IntegerLiteral) (ALT DecimalLiteral) (ALT StringLiteral) (ALT BooleanLiteral) (ALT NilLiteral) (ALT Identifier) (ALT '{' (? (BLOCK (ALT argumentList))) '}'))) (RULE operator (BLOCK (ALT (SET '+' '-' '*' '/' '%' '==' '!=' '<' '>' '<=' '>=' '&' '|')))) (RULE IntegerLiteral (BLOCK (ALT (+ (BLOCK (ALT Digit)))))) (RULE DecimalLiteral (BLOCK (ALT (+ (BLOCK (ALT Digit))) '.' (+ (BLOCK (ALT Digit)))))) (RULE Apostrophe (BLOCK (ALT '\''))) (RULE StringLiteral (BLOCK (ALT '"' (* (BLOCK (ALT .))) '"') (ALT Apostrophe (* (BLOCK (ALT .))) Apostrophe))) (RULE BooleanLiteral (BLOCK (ALT 'true') (ALT 'false'))) (RULE NilLiteral (BLOCK (ALT 'nil'))) (RULE Comment (BLOCK (LEXER_ALT_ACTION (ALT '//' (* (BLOCK (ALT (~ (SET [\r\n])))))) skip))) (RULE MultiLineComment (BLOCK (LEXER_ALT_ACTION (ALT '/*' (* (BLOCK (ALT .))) '*/') skip))) (RULE Identifier (BLOCK (ALT [a-zA-Z_] (* (BLOCK (ALT [a-zA-Z_0-9])))))) (RULE Digit (BLOCK (ALT [0-9]))) (RULE Whitespace (BLOCK (LEXER_ALT_ACTION (ALT [ \t\n\r]) skip)))))
+2023-05-12 17:23:03:895 grammar LogManager.java:25 after extract implicit lexer =(COMBINED_GRAMMAR Splikit (RULES (RULE program (BLOCK (ALT (* (BLOCK (ALT statement)))))) (RULE statement (BLOCK (ALT variableDeclaration) (ALT functionDeclaration) (ALT ifStatement) (ALT whileStatement) (ALT importStatement) (ALT enumDeclaration) (ALT classDeclaration) (ALT expression))) (RULE variableDeclaration (BLOCK (ALT Identifier '=' expression))) (RULE functionDeclaration (BLOCK (ALT 'func' Identifier '(' (? (BLOCK (ALT parameterList))) ')' '{' (* (BLOCK (ALT statement))) '}') (ALT Identifier '(' (? (BLOCK (ALT parameterList))) ')' '=>' '{' (* (BLOCK (ALT statement))) '}'))) (RULE enumDeclaration (BLOCK (ALT 'enum' Identifier '{' (* (BLOCK (ALT variableDeclaration))) '}'))) (RULE classDeclaration (BLOCK (ALT 'class' Identifier '{' (* (BLOCK (ALT statement))) '}'))) (RULE functionCall (BLOCK (ALT Identifier '(' (? (BLOCK (ALT argumentList))) ')'))) (RULE ifStatement (BLOCK (ALT 'if' expression '{' (* (BLOCK (ALT statement))) '}' (? (BLOCK (ALT 'else' '{' (* (BLOCK (ALT statement))) '}')))))) (RULE importStatement (BLOCK (ALT 'import' StringLiteral))) (RULE whileStatement (BLOCK (ALT 'while' expression '{' (* (BLOCK (ALT statement))) '}'))) (RULE parameterList (BLOCK (ALT Identifier (* (BLOCK (ALT ',' Identifier)))))) (RULE argumentList (BLOCK (ALT expression (* (BLOCK (ALT ',' expression)))))) (RULE getAttr (BLOCK (ALT primaryExpression '.' Identifier (? (BLOCK (ALT '(' (? (BLOCK (ALT argumentList))) ')')))))) (RULE expression (BLOCK (ALT getAttr) (ALT primaryExpression (* (BLOCK (ALT operator expression)))) (ALT '!' primaryExpression))) (RULE primaryExpression (BLOCK (ALT '(' expression ')') (ALT functionCall) (ALT atomExpression))) (RULE atomExpression (BLOCK (ALT IntegerLiteral) (ALT DecimalLiteral) (ALT StringLiteral) (ALT BooleanLiteral) (ALT NilLiteral) (ALT Identifier) (ALT '{' (? (BLOCK (ALT argumentList))) '}'))) (RULE operator (BLOCK (ALT (SET '+' '-' '*' '/' '%' '==' '!=' '<' '>' '<=' '>=' '&' '|'))))))
+2023-05-12 17:23:03:895 grammar LogManager.java:25 lexer =(LEXER_GRAMMAR SplikitLexer (RULES (RULE T__0 (BLOCK (ALT '='))) (RULE T__1 (BLOCK (ALT 'func'))) (RULE T__2 (BLOCK (ALT '('))) (RULE T__3 (BLOCK (ALT ')'))) (RULE T__4 (BLOCK (ALT '{'))) (RULE T__5 (BLOCK (ALT '}'))) (RULE T__6 (BLOCK (ALT '=>'))) (RULE T__7 (BLOCK (ALT 'enum'))) (RULE T__8 (BLOCK (ALT 'class'))) (RULE T__9 (BLOCK (ALT 'if'))) (RULE T__10 (BLOCK (ALT 'else'))) (RULE T__11 (BLOCK (ALT 'import'))) (RULE T__12 (BLOCK (ALT 'while'))) (RULE T__13 (BLOCK (ALT ','))) (RULE T__14 (BLOCK (ALT '.'))) (RULE T__15 (BLOCK (ALT '!'))) (RULE T__16 (BLOCK (ALT '+'))) (RULE T__17 (BLOCK (ALT '-'))) (RULE T__18 (BLOCK (ALT '*'))) (RULE T__19 (BLOCK (ALT '/'))) (RULE T__20 (BLOCK (ALT '%'))) (RULE T__21 (BLOCK (ALT '=='))) (RULE T__22 (BLOCK (ALT '!='))) (RULE T__23 (BLOCK (ALT '<'))) (RULE T__24 (BLOCK (ALT '>'))) (RULE T__25 (BLOCK (ALT '<='))) (RULE T__26 (BLOCK (ALT '>='))) (RULE T__27 (BLOCK (ALT '&'))) (RULE T__28 (BLOCK (ALT '|'))) (RULE IntegerLiteral (BLOCK (ALT (+ (BLOCK (ALT Digit)))))) (RULE DecimalLiteral (BLOCK (ALT (+ (BLOCK (ALT Digit))) '.' (+ (BLOCK (ALT Digit)))))) (RULE Apostrophe (BLOCK (ALT '\''))) (RULE StringLiteral (BLOCK (ALT '"' (* (BLOCK (ALT .))) '"') (ALT Apostrophe (* (BLOCK (ALT .))) Apostrophe))) (RULE BooleanLiteral (BLOCK (ALT 'true') (ALT 'false'))) (RULE NilLiteral (BLOCK (ALT 'nil'))) (RULE Comment (BLOCK (LEXER_ALT_ACTION (ALT '//' (* (BLOCK (ALT (~ (SET [\r\n])))))) skip))) (RULE MultiLineComment (BLOCK (LEXER_ALT_ACTION (ALT '/*' (* (BLOCK (ALT .))) '*/') skip))) (RULE Identifier (BLOCK (ALT [a-zA-Z_] (* (BLOCK (ALT [a-zA-Z_0-9])))))) (RULE Digit (BLOCK (ALT [0-9]))) (RULE Whitespace (BLOCK (LEXER_ALT_ACTION (ALT [ \t\n\r]) skip)))))
+2023-05-12 17:23:04:409 semantics LogManager.java:25 tokens={EOF=-1, T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, T__23=24, T__24=25, T__25=26, T__26=27, T__27=28, T__28=29, IntegerLiteral=30, DecimalLiteral=31, Apostrophe=32, StringLiteral=33, BooleanLiteral=34, NilLiteral=35, Comment=36, MultiLineComment=37, Identifier=38, Digit=39, Whitespace=40}
+2023-05-12 17:23:04:409 semantics LogManager.java:25 strings={'='=1, 'func'=2, '('=3, ')'=4, '{'=5, '}'=6, '=>'=7, 'enum'=8, 'class'=9, 'if'=10, 'else'=11, 'import'=12, 'while'=13, ','=14, '.'=15, '!'=16, '+'=17, '-'=18, '*'=19, '/'=20, '%'=21, '=='=22, '!='=23, '<'=24, '>'=25, '<='=26, '>='=27, '&'=28, '|'=29, '\''=32, 'nil'=35}
+2023-05-12 17:23:04:444 LL1 LogManager.java:25 
+DECISION 0 in rule program
+2023-05-12 17:23:04:445 LL1 LogManager.java:25 look=[{2..3, 5, 8..10, 12..13, 16, 30..31, 33..35, 38}, <EOF>]
+2023-05-12 17:23:04:446 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:447 LL1 LogManager.java:25 
+DECISION 1 in rule statement
+2023-05-12 17:23:04:447 LL1 LogManager.java:25 look=[38, {2, 38}, 10, 13, 12, 8, 9, {3, 5, 16, 30..31, 33..35, 38}]
+2023-05-12 17:23:04:447 LL1 LogManager.java:25 LL(1)? false
+2023-05-12 17:23:04:447 LL1 LogManager.java:25 
+DECISION 2 in rule functionDeclaration
+2023-05-12 17:23:04:447 LL1 LogManager.java:25 look=[38, 4]
+2023-05-12 17:23:04:447 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:447 LL1 LogManager.java:25 
+DECISION 3 in rule functionDeclaration
+2023-05-12 17:23:04:448 LL1 LogManager.java:25 look=[{2..3, 5, 8..10, 12..13, 16, 30..31, 33..35, 38}, 6]
+2023-05-12 17:23:04:448 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:448 LL1 LogManager.java:25 
+DECISION 4 in rule functionDeclaration
+2023-05-12 17:23:04:448 LL1 LogManager.java:25 look=[38, 4]
+2023-05-12 17:23:04:448 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:448 LL1 LogManager.java:25 
+DECISION 5 in rule functionDeclaration
+2023-05-12 17:23:04:449 LL1 LogManager.java:25 look=[{2..3, 5, 8..10, 12..13, 16, 30..31, 33..35, 38}, 6]
+2023-05-12 17:23:04:449 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:449 LL1 LogManager.java:25 
+DECISION 6 in rule functionDeclaration
+2023-05-12 17:23:04:449 LL1 LogManager.java:25 look=[2, 38]
+2023-05-12 17:23:04:449 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:449 LL1 LogManager.java:25 
+DECISION 7 in rule enumDeclaration
+2023-05-12 17:23:04:450 LL1 LogManager.java:25 look=[38, 6]
+2023-05-12 17:23:04:450 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:450 LL1 LogManager.java:25 
+DECISION 8 in rule classDeclaration
+2023-05-12 17:23:04:450 LL1 LogManager.java:25 look=[{2..3, 5, 8..10, 12..13, 16, 30..31, 33..35, 38}, 6]
+2023-05-12 17:23:04:451 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:451 LL1 LogManager.java:25 
+DECISION 9 in rule functionCall
+2023-05-12 17:23:04:451 LL1 LogManager.java:25 look=[{3, 5, 16, 30..31, 33..35, 38}, 4]
+2023-05-12 17:23:04:451 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:451 LL1 LogManager.java:25 
+DECISION 10 in rule ifStatement
+2023-05-12 17:23:04:452 LL1 LogManager.java:25 look=[{2..3, 5, 8..10, 12..13, 16, 30..31, 33..35, 38}, 6]
+2023-05-12 17:23:04:452 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:452 LL1 LogManager.java:25 
+DECISION 11 in rule ifStatement
+2023-05-12 17:23:04:452 LL1 LogManager.java:25 look=[{2..3, 5, 8..10, 12..13, 16, 30..31, 33..35, 38}, 6]
+2023-05-12 17:23:04:453 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:453 LL1 LogManager.java:25 
+DECISION 12 in rule ifStatement
+2023-05-12 17:23:04:455 LL1 LogManager.java:25 look=[11, {<EOF>, 2..3, 5..6, 8..10, 12..13, 16, 30..31, 33..35, 38}]
+2023-05-12 17:23:04:456 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:456 LL1 LogManager.java:25 
+DECISION 13 in rule whileStatement
+2023-05-12 17:23:04:456 LL1 LogManager.java:25 look=[{2..3, 5, 8..10, 12..13, 16, 30..31, 33..35, 38}, 6]
+2023-05-12 17:23:04:456 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:456 LL1 LogManager.java:25 
+DECISION 14 in rule parameterList
+2023-05-12 17:23:04:456 LL1 LogManager.java:25 look=[14, 4]
+2023-05-12 17:23:04:457 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:457 LL1 LogManager.java:25 
+DECISION 15 in rule argumentList
+2023-05-12 17:23:04:457 LL1 LogManager.java:25 look=[14, {4, 6}]
+2023-05-12 17:23:04:457 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:457 LL1 LogManager.java:25 
+DECISION 16 in rule getAttr
+2023-05-12 17:23:04:457 LL1 LogManager.java:25 look=[{3, 5, 16, 30..31, 33..35, 38}, 4]
+2023-05-12 17:23:04:457 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:457 LL1 LogManager.java:25 
+DECISION 17 in rule getAttr
+2023-05-12 17:23:04:465 LL1 LogManager.java:25 look=[3, {<EOF>, 2..6, 8..10, 12..14, 16..31, 33..35, 38}]
+2023-05-12 17:23:04:465 LL1 LogManager.java:25 LL(1)? false
+2023-05-12 17:23:04:465 LL1 LogManager.java:25 
+DECISION 18 in rule expression
+2023-05-12 17:23:04:466 LL1 LogManager.java:25 look=[{17..29}, {<EOF>, 2..6, 8..10, 12..14, 16..31, 33..35, 38}]
+2023-05-12 17:23:04:466 LL1 LogManager.java:25 LL(1)? false
+2023-05-12 17:23:04:467 LL1 LogManager.java:25 
+DECISION 19 in rule expression
+2023-05-12 17:23:04:467 LL1 LogManager.java:25 look=[{3, 5, 30..31, 33..35, 38}, {3, 5, 30..31, 33..35, 38}, 16]
+2023-05-12 17:23:04:467 LL1 LogManager.java:25 LL(1)? false
+2023-05-12 17:23:04:467 LL1 LogManager.java:25 
+DECISION 20 in rule primaryExpression
+2023-05-12 17:23:04:467 LL1 LogManager.java:25 look=[3, 38, {5, 30..31, 33..35, 38}]
+2023-05-12 17:23:04:468 LL1 LogManager.java:25 LL(1)? false
+2023-05-12 17:23:04:468 LL1 LogManager.java:25 
+DECISION 21 in rule atomExpression
+2023-05-12 17:23:04:469 LL1 LogManager.java:25 look=[{3, 5, 16, 30..31, 33..35, 38}, 6]
+2023-05-12 17:23:04:469 LL1 LogManager.java:25 LL(1)? true
+2023-05-12 17:23:04:469 LL1 LogManager.java:25 
+DECISION 22 in rule atomExpression
+2023-05-12 17:23:04:469 LL1 LogManager.java:25 look=[30, 31, 33, 34, 35, 38, 5]
+2023-05-12 17:23:04:469 LL1 LogManager.java:25 LL(1)? true
