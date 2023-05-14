@@ -45,8 +45,8 @@ def main(f: str) -> None:
     visitor.visit(tree)
 
     end = perf_counter()
-    elapsed = end - start
-    print(f'Execution took: {elapsed * 1000}ms')
+    _ = end - start
+    # print(f'Execution took: {elapsed * 1000}ms')
 
 
 if __name__ == '__main__' and len(argv) > 1:

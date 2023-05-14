@@ -2,7 +2,7 @@ from typing import NoReturn
 from inspect import stack
 from traceback import print_stack
 
-debug = True
+debug = False
 
 def report_error(typ: str, msg: str) -> NoReturn:
     if debug:

@@ -4,6 +4,7 @@
 ---
 
 Splikit is a language that has just been created so expect many bugs.
+Also note that this language is extremely slow.
 
 ---
 
