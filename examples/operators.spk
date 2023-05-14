@@ -1,0 +1,11 @@
+object1 = 'Hello World'
+object2 = 3
+
+Print(object1 + ', Huh..')
+Print(object1 * object2)
+Print(object2 / 3)
+Print(object2 % 2)
+Print(object2 != 9)
+Print(object2 < 5)
+Print(object2 >= 10)
+Print(object2 * 10)

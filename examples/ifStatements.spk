@@ -1,0 +1,12 @@
+condition = IsAlpha('Hello')
+if condition {
+    Print('Condition is true')
+} else {
+    Print('Condition is false')
+}
+
+if !condition {
+    Print('The opposite of the first if statement')
+} else {
+    Print('This will run now!')
+}

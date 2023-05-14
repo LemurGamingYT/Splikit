@@ -1,9 +1,11 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 @dataclass()
 class FloatObject:
     value: float
+
+    __type__: str = field(init=False, repr=False, default='float')
 
     def repr(self) -> str:
         return str(self.value)

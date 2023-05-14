@@ -1,9 +1,11 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 @dataclass()
 class IntObject:
     value: int
+
+    __type__: str = field(init=False, repr=False, default='int')
 
     def repr(self) -> str:
         return str(self.value)

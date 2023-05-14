@@ -1,7 +1,6 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from .IntObject import IntObject
 from .BoolObject import BoolObject
-from .NilObject import NilObject
 from typing import Any
 
 def quicksort(arr):
@@ -21,6 +20,8 @@ def quicksort(arr):
 @dataclass()
 class ArrayObject:
     value: list[Any, ...]
+
+    __type__: str = field(init=False, repr=False, default='array')
 
     def repr(self) -> str:
         return f'{{{", ".join(val.repr() for val in self.value)}}}'

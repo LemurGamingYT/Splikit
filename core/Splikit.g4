@@ -17,16 +17,23 @@ variableDeclaration: Identifier '=' expression;
 functionDeclaration
     : 'func' Identifier '(' parameterList? ')' '{' statement* '}'
     | Identifier '(' parameterList? ')' '=>' '{' statement* '}'
+    | 'func' Identifier '::' Identifier '(' parameterList? ')' '{' statement* '}'
     ;
 
 enumDeclaration: 'enum' Identifier '{' variableDeclaration* '}';
 
-classDeclaration: 'class' Identifier '{' statement* '}';
+clsFuncDeclaration: 'func' Identifier '(' parameterList? ')' '{' statement* '}';
+
+classDeclarations
+    : clsFuncDeclaration*
+    | variableDeclaration*
+    ;
+classDeclaration: 'class' Identifier '{' classDeclarations '}';
 
 functionCall: Identifier '(' argumentList? ')';
 
 ifStatement: 'if' expression '{' statement* '}' ('else' '{' statement* '}')?;
-importStatement: 'import' StringLiteral;
+importStatement: 'import' ('{' StringLiteral (',' StringLiteral)* '}' | '*')? StringLiteral;
 whileStatement: 'while' expression '{' statement* '}';
 
 parameterList: Identifier (',' Identifier)*;
@@ -34,7 +41,8 @@ parameterList: Identifier (',' Identifier)*;
 argumentList: expression (',' expression)*;
 
 getAttr: primaryExpression '.' Identifier ('(' argumentList? ')')?;
-expression: getAttr | primaryExpression (operator expression)* | '!' primaryExpression;
+castObject: primaryExpression '.' '(' Identifier ')';
+expression: getAttr | castObject | primaryExpression (operator expression)* | '!' primaryExpression;
 
 primaryExpression: '(' expression ')' | functionCall | atomExpression;
 
@@ -44,7 +52,8 @@ atomExpression: IntegerLiteral
               | BooleanLiteral
               | NilLiteral
               | Identifier
-              | '{' argumentList? '}' ;
+              | '{' argumentList? '}'
+              ;
 
 operator: '+' | '-' | '*' | '/' | '%' | '==' | '!=' | '<' | '>' | '<=' | '>=' | '&' | '|';
 

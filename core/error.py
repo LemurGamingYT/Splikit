@@ -9,4 +9,4 @@ def report_error(typ: str, msg: str) -> NoReturn:
         print_stack(f=stack()[1][0], limit=None)
 
     print(f'{typ}Error: {msg}')
-    exit(1)
+    exit(0)

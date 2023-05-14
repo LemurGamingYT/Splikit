@@ -1,0 +1,5 @@
+enum elements {
+    HYDROGEN = 0
+}
+
+Print(elements.HYDROGEN)

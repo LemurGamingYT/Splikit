@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from ..gen.SplikitVisitor import SplikitVisitor
 from ..gen.SplikitParser import SplikitParser
 from typing import Callable, Any, Union
+from . import VarObject
 
 @dataclass()
 class FuncObject:
@@ -12,11 +12,25 @@ class FuncObject:
     py: Union[Callable, None]
 
     def repr(self) -> str:
-        return f'Function at {hex(id(self))}'
+        return f'Function \'{self.name}\' at {hex(id(self))}'
 
-    def call(self, args: tuple[Any, ...], visitor: SplikitVisitor):
+    def __add_params(self, args: tuple[Any, ...], visitor) -> None:
+        env = visitor.env
+        for arg, param in zip(args, self.params):
+            env.add_variable(VarObject(param, arg))
+    
+    def __remove_params(self, visitor) -> None:
+        env = visitor.env
+        for param in self.params:
+            env.remove_variable(param)
+
+    def call(self, args: tuple[Any, ...], visitor) -> None:
         if self.body is not None:
+            self.__add_params(args, visitor)
+            
             for stmt in self.body:
                 visitor.visit(stmt)
-        else:
+            
+            self.__remove_params(visitor)
+        elif self.py is not None:
             return self.py(args, visitor)

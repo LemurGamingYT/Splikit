@@ -7,3 +7,4 @@ from .VarObject import VarObject
 from .FuncObject import FuncObject
 from .ArrayObject import ArrayObject
 from .ClassObject import ClassObject
+from .ModuleObject import ModuleObject

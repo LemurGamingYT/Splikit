@@ -2,7 +2,6 @@ from .gen.SplikitVisitor import SplikitVisitor
 from .gen.SplikitParser import SplikitParser
 from .env import Environment
 from .error import report_error
-from .other.funcs import Funcs
 from .other.libs import Libs
 from .objects import *
 
@@ -19,13 +18,29 @@ class Visitor(SplikitVisitor):
         return NilObject()
 
     def visitFunctionDeclaration(self, ctx:SplikitParser.FunctionDeclarationContext):
-        name = ctx.Identifier().getText()
-        params = ()
-        if ctx.parameterList() is not None:
-            params = tuple([identifier.getText() for identifier in ctx.parameterList().Identifier()])
+        if ctx.getText().__contains__('::'):
+            cls_name = ctx.Identifier(0).getText()
+            func_name = ctx.Identifier(1).getText()
 
-        body = ctx.statement()
-        self.env.add_func(FuncObject(name, params, body, None))
+            body = ctx.statement()
+
+            params = ()
+            if ctx.parameterList() is not None:
+                params = tuple([identifier.getText() for identifier in ctx.Identifier(1).Identifier()])
+
+            if self.env.try_cls(cls_name) is not None:
+                cls = self.env.get_cls(cls_name)
+                cls.methods[func_name] = FuncObject(func_name, params, body, None)
+            else:
+                return report_error('Name', f'Class \'{cls_name}\' does not exist')
+        else:
+            name = ctx.Identifier(0).getText()
+            params = ()
+            if ctx.parameterList() is not None:
+                params = tuple([identifier.getText() for identifier in ctx.parameterList().Identifier()])
+
+            body = ctx.statement()
+            self.env.add_func(FuncObject(name, params, body, None))
 
     def visitFunctionCall(self, ctx:SplikitParser.FunctionCallContext):
         name = ctx.Identifier().getText()
@@ -34,16 +49,43 @@ class Visitor(SplikitVisitor):
         else:
             args = tuple([self.visit(expr) for expr in ctx.argumentList().expression()])
 
+        if self.env.try_cls(name) is not None:
+            cls = self.env.get_cls(name)
+            init = cls.methods.get('Init')
+            if init is not None:
+                init.call(args, self)
+
+            return self.env.get_cls(name)
+
         func = self.env.get_func(name)
         return func.call(args, self)
 
     def visitImportStatement(self, ctx:SplikitParser.ImportStatementContext):
-        library = StringObject(ctx.StringLiteral().getText()[1:-1])
-        lib = getattr(Libs, library.value)()
-        methods = [method for method in dir(lib) if callable(getattr(lib, method)) and not method.startswith('__')]
-        for method in methods:
-            f = getattr(lib, method)
-            self.env.add_func(FuncObject(f.__name__[1:], (), None, f))
+        as_cls = True if len(ctx.StringLiteral()) == 1 else False
+
+        if as_cls:
+            name = ctx.StringLiteral(0).getText()[1:-1]
+            lib = getattr(Libs, name)()
+
+            methods = {}
+            for method in [method for method in dir(lib) if
+                           callable(getattr(lib, method)) and not method.startswith('__')]:
+                methods[method] = FuncObject(method, (), None, getattr(lib, method))
+
+            attributes = {}
+            for attr in [attr for attr in dir(lib) if not callable(getattr(lib, attr)) and not attr.startswith('__')]:
+                attributes[attr] = FuncObject(attr, (), None, getattr(lib, attr))
+
+            obj = ModuleObject(name, attributes, methods)
+            obj.__import__(self.env)
+        else:
+            name = ctx.StringLiteral()[-1].getText()[1:-1]
+            lib = getattr(Libs, name)()
+
+            for method in [method for method in dir(lib) if
+                           callable(getattr(lib, method)) and not method.startswith('__')]:
+                if method in [ident.getText()[1:-1] for ident in ctx.StringLiteral()[:-1]]:
+                    self.env.add_func(FuncObject(method, (), None, getattr(lib, method)))
 
     def visitWhileStatement(self, ctx:SplikitParser.WhileStatementContext):
         while self.visit(ctx.expression()):
@@ -59,6 +101,33 @@ class Visitor(SplikitVisitor):
             for stmt in ctx.statement()[-1:]:
                 self.visit(stmt)
 
+    def visitEnumDeclaration(self, ctx:SplikitParser.EnumDeclarationContext):
+        enum_name = ctx.Identifier().getText()
+        attributes = {}
+        for declaration in ctx.variableDeclaration():
+            attributes[declaration.Identifier().getText()] = self.visit(declaration.expression())
+
+        self.env.add_cls(ClassObject(enum_name, attributes, {}))
+
+    def visitClassDeclaration(self, ctx:SplikitParser.ClassDeclarationContext):
+        name = ctx.Identifier().getText()
+        attributes = {}
+        methods = {}
+
+        for declaration in ctx.classDeclarations().variableDeclaration():
+            attributes[declaration.Identifier().getText()] = self.visit(declaration.expression())
+
+        for func in ctx.classDeclarations().clsFuncDeclaration():
+            ident = func.Identifier().getText()
+
+            params = ()
+            if func.parameterList() is not None:
+                params = tuple([identifier.getText() for identifier in func.parameterList().Identifier()])
+
+            methods[ident] = FuncObject(ident, params, func.statement(), None)
+
+        self.env.add_cls(ClassObject(name, attributes, methods))
+
     def visitGetAttr(self, ctx:SplikitParser.GetAttrContext):
         obj = self.visit(ctx.primaryExpression())
         attr = ctx.Identifier().getText()
@@ -67,8 +136,15 @@ class Visitor(SplikitVisitor):
             args = tuple([self.visit(arg) for arg in ctx.argumentList().expression()])
 
         if isinstance(obj, ClassObject):
-            if f'_{attr}' in obj.methods:
-                return obj.methods[f'_{attr}'].call(args, self)
+            if attr in obj.methods:
+                return obj.methods[attr].call(args, self)
+            elif attr in obj.attributes:
+                return obj.attributes[attr].value
+            else:
+                return report_error('Type', f'Unknown attribute \'{attr}\'')
+        elif isinstance(obj, ModuleObject):
+            if attr in obj.methods:
+                return obj.methods[attr].call(args, self)
             elif attr in obj.attributes:
                 return obj.attributes[attr].value
             else:
@@ -76,9 +152,20 @@ class Visitor(SplikitVisitor):
 
         return getattr(obj, attr)(args)
 
+    def visitCastObject(self, ctx:SplikitParser.CastObjectContext):
+        expr = self.visit(ctx.primaryExpression())
+        typ = ctx.Identifier().getText()
+
+        try:
+            return getattr(expr, f'As{typ.title()}')()
+        except AttributeError:
+            return report_error('Type', f'Invalid cast type \'{expr.type}\' to \'{typ}\'')
+
     def visitExpression(self, ctx:SplikitParser.ExpressionContext):
         if ctx.getAttr() is not None:
             return self.visit(ctx.getAttr())
+        elif ctx.castObject() is not None:
+            return self.visit(ctx.castObject())
         elif ctx.operator() is not None:
             if ctx.primaryExpression() is None:
                 return
@@ -132,13 +219,11 @@ class Visitor(SplikitVisitor):
         elif ctx.NilLiteral() is not None:
             return NilObject()
         elif ctx.Identifier() is not None:
-            if self.env.try_variable(ctx.Identifier().getText()) is not None:
-                return self.env.get_variable(ctx.Identifier().getText()).value
+            name = ctx.Identifier().getText()
+            obj = self.env.try_variable(name) or self.env.try_func(name) or self.env.try_cls(
+                name) or self.env.try_module(name)
+            if obj is not None:
+                return obj.value if isinstance(obj, VarObject) else obj
             else:
-                if self.env.try_func(ctx.Identifier().getText()) is not None:
-                    return self.env.get_func(ctx.Identifier().getText())
-                else:
-                    if self.env.try_cls(ctx.Identifier().getText()) is not None:
-                        return self.env.get_cls(ctx.Identifier().getText())
-                    else:
-                        return report_error('Name', f'Unknown object \'{ctx.Identifier().getText()}\'')
+                return report_error('Name', f'Unknown object \'{name}\'')
+

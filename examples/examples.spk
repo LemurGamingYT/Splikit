@@ -1,0 +1,162 @@
+// print things out
+print("Hello World")
+
+// make variables
+v = "Hello"
+print(v) <-- print out the variable
+
+// define comments using // or <--
+
+v = "World" <-- re-assign the variable
+print("v is {}", v) <-- format the variable
+
+// explicitly type the variable
+int i = 0; <-- optional semi-colons
+
+// casting
+string o = "50"
+print(o.(int)) <-- calls a method of the object 'AsInt' (returns the integer 50)
+
+// attributes
+print(o.LowerCase())
+print(o.UpperCase())
+print(o.AsInt()) <-- does the same as o.(int)
+
+// functions
+func main() {
+    print("Hello to main")
+}
+
+// call the main function
+main()
+
+// create a function in a more concise way
+add(int num1, int num2) => { <-- explicitly type the parameters
+    return num1 + num2 <-- operators and return keyword
+}
+
+// allow pointers
+*p = &o <-- '&' gets the memory address
+print(p) <-- memory address of the o variable
+
+// re-assign the body of a function
+main.Body => { <--
+    print("It's all new!")
+}
+
+main() <-- calls the new function
+
+// use the binary function to convert a string to binary
+string binary_h = bin("H") <-- snake case
+print(binary_h)
+
+// import statements
+import { "op", "get_op_from_symbol", "get_op_from_name" } "operators" <-- import various functions from the operators library
+
+float num1 = 2.5 <-- use the float (decimal) type
+int num2 = 4
+print(op("add", num1, num2)) <-- same as num1 + num2
+
+// control flow & loop examples
+if (true) { <-- optional brackets
+    // always runs
+    print("This will always run")
+} else { <-- this will never run
+    print("This will never run")
+}
+
+// import the batch library
+import "batch"
+
+batch.run_script("test.bat") <-- runs ./test.bat
+
+// import the json library from a string
+j = "json"
+
+import j
+
+json = j.read_json("config.json")
+print(json)
+
+// create a struct
+struct User {
+    name string
+    age int
+}
+
+// add a function to the struct
+func User::pay(int amount): nil { <-- returns nothing
+    set_attribute(this, "payment", amount) <-- set an attribute to the struct
+}
+
+u = User("John", 31)
+u.pay(50)
+
+// create a money class
+class Cash {
+    // optional private/public keyword (public by default)
+    func initalizer((float | int) value): nil { <-- initalizers cannot return anything
+        this.value = value
+    }
+}
+
+// delete the struct from memory
+env.remove("User") <-- remove the 'User' struct from the environment, also makes the 'u' variable nil
+env.remove("u") <-- remove the 'u' variable from the environment
+
+// create a user class and use the 'advancedclass' library
+import { "advanced_cls" } "advanced_cls" <-- like dataclasses from python
+
+class User {
+    advanced_cls({"name", string}, {"age", int}, fstring=true, finit=true)
+
+    func pay(Cash amount): nil {
+        set_attribute(this, "payment", amount.value)
+    }
+}
+
+cash_amount = Cash(50)
+u = User("Mary", 23)
+print(u) <-- prints out User(name='Mary', age=23)
+u.pay(cash_amount)
+
+// create a calculator class
+class Calculator {
+    // static methods belong to the class and cannot use anything from the class
+    static add(any n1, any n2): any { <-- any type can be anything
+        return n1 + n2
+    }
+
+    static sub(n1, n2) {
+        return n1 - n2
+    }
+
+    static mul(n1, n2) {
+        return n1 * n2
+    }
+
+    static div(n1, n2) {
+        return n1 / n2
+    }
+
+    static mod(n1, n2) {
+        return n1 % n2
+    }
+}
+
+class Machine <- { Calculator } { <-- inherits from Calculator class
+    private func get_method(string symbol): string {
+        return get_op_from_symbol(symbol)
+    }
+
+    func initalizer(string type) {
+        this.machine_type = type
+    }
+}
+
+func make_machine(string type): Machine {
+    return Machine(type)
+}
+
+machine = make_machine("fax")
+machine.get_method("%") <-- AccessError: 'get_method' is defined but is private

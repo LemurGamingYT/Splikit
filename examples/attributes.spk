@@ -1,0 +1,5 @@
+object = 'Hello World'
+
+Print(object.Lower())
+Print(object.ReplaceSubstring('Hello', 'Goodbye'))
+Print(object.Upper())

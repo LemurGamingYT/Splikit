@@ -7,4 +7,4 @@ class VarObject:
     value: Any
 
     def repr(self) -> str:
-        return f'<variable at {hex(id(self))}>'
+        return f'Variable \'{self.name}\' at {hex(id(self))}'

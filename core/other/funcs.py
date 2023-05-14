@@ -2,24 +2,35 @@ from typing import Any
 from . import get_arg
 from ..objects import *
 from . import report_argument_type_error, is_instance_type
-from ...main import main
 
 class Funcs:
     @staticmethod
     def Print_func(args: tuple[Any, ...], _) -> NilObject: # visitor is _
-        print(get_arg(0, args).repr())
+        if hasattr(get_arg(0, args), 'repr'):
+            print(get_arg(0, args).repr())
+        else:
+            print(get_arg(0, args))
+
         return NilObject()
 
     @staticmethod
-    def Splik_func(args: tuple[Any, ...], _):
-        file = get_arg(0, args)
-        if is_instance_type(file, StringObject, expected_type='string'):
-            main(file.value)
+    def AllObjects_func(_: tuple[Any, ...], visitor) -> ArrayObject:
+        return ArrayObject(
+            [obj for obj in visitor.env.variables.values()] + \
+            [obj for obj in visitor.env.functions.values()] + \
+            [obj for obj in visitor.env.classes.values()] + \
+            [obj for obj in visitor.env.modules.values()])
+
+    # @staticmethod
+    # def Splik_func(args: tuple[Any, ...], _):
+    #     file = get_arg(0, args)
+    #     if is_instance_type(file, StringObject, expected_type='string'):
+    #         main(file.value)
 
     @staticmethod
     def Any_func(args: tuple[Any, ...], _) -> BoolObject:
         arr = get_arg(0, args)
-        if is_instance_type(arr, ArrayObject, expected_type='array'):
+        if is_instance_type(arr, ArrayObject):
             for val in arr.value:
                 if isinstance(val, BoolObject) and val:
                     return BoolObject(True)
@@ -29,7 +40,7 @@ class Funcs:
     @staticmethod
     def All_func(args: tuple[Any, ...], _) -> BoolObject:
         arr = get_arg(0, args)
-        if is_instance_type(arr, ArrayObject, expected_type='array'):
+        if is_instance_type(arr, ArrayObject):
             for val in arr.value:
                 if isinstance(val, BoolObject) and val:
                     return BoolObject(False)
@@ -37,9 +48,11 @@ class Funcs:
             return BoolObject(True)
 
     @staticmethod
-    def Len_func(args: tuple[Any, ...], _) -> BoolObject:
+    def Len_func(args: tuple[Any, ...], _) -> IntObject:
         if isinstance(get_arg(0, args), StringObject):
-            return BoolObject(True)
+            return IntObject(len(get_arg(0, args).value))
+        elif isinstance(get_arg(0, args), ArrayObject):
+            return IntObject(len(get_arg(0, args).value))
 
         return report_argument_type_error('string', get_arg(0, args).type)
 

@@ -1,0 +1,4 @@
+import "Knock"
+
+request = Knock.Knock('https://www.google.com')
+Print(request.content)

@@ -1,0 +1,7 @@
+Print(Converter.IntToBinary(69))
+
+Print(Math.PI)
+Print(Math.Max(100, 1000))
+Print(Math.SquareRoot(81))
+Print(Math.RandomInt(50, 100))
+Print(Math.IsPrime(7))

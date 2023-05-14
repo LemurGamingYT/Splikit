@@ -1,9 +1,11 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 @dataclass()
 class BoolObject:
     value: bool
+
+    __type__: str = field(init=False, repr=False, default='bool')
 
     def repr(self) -> str:
         return str(self.value).lower()

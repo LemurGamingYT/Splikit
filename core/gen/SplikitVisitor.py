@@ -34,6 +34,16 @@ class SplikitVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by SplikitParser#clsFuncDeclaration.
+    def visitClsFuncDeclaration(self, ctx:SplikitParser.ClsFuncDeclarationContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SplikitParser#classDeclarations.
+    def visitClassDeclarations(self, ctx:SplikitParser.ClassDeclarationsContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by SplikitParser#classDeclaration.
     def visitClassDeclaration(self, ctx:SplikitParser.ClassDeclarationContext):
         return self.visitChildren(ctx)
@@ -71,6 +81,11 @@ class SplikitVisitor(ParseTreeVisitor):
 
     # Visit a parse tree produced by SplikitParser#getAttr.
     def visitGetAttr(self, ctx:SplikitParser.GetAttrContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by SplikitParser#castObject.
+    def visitCastObject(self, ctx:SplikitParser.CastObjectContext):
         return self.visitChildren(ctx)
 
 

@@ -24,8 +24,19 @@ def report_argument_type_error(expected_type: str, got_type: str, s = None) -> A
         f'Invalid type \'{got_type}\', expected \'{expected_type}\' for \'{format_name(s)}\' func'
     )
 
-def is_instance_type(obj: Any, typ: tuple | Any, *, expected_type: str = 'int') -> bool:
+def is_instance_type(obj: Any, typ: tuple | Any, *, strict: bool = True) -> bool:
     if isinstance(obj, typ):
         return True
+    elif strict:
+        expected_types = typ
+        if isinstance(typ, tuple):
+            expected_types = ''
+            for i, t in enumerate(typ):
+                if i > 0:
+                    expected_types += ' or '
+
+                expected_types += t.__type__
+
+        return report_argument_type_error(expected_types, obj.type, format_name(stack()[1].function))
     else:
-        return report_argument_type_error(expected_type, obj.type, format_name(stack()[1].function))
+        return False

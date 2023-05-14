@@ -1,8 +1,9 @@
 from typing import Union, NoReturn
+
 from .error import report_error
-from .objects import FuncObject, VarObject, ClassObject
-from .other.funcs import Funcs
+from .objects import FuncObject, VarObject, ClassObject, ModuleObject
 from .other.classes import Classes, generate_cls
+from .other.funcs import Funcs
 
 
 class Environment:
@@ -10,6 +11,7 @@ class Environment:
         self.variables: dict[str: VarObject] = {}
         self.functions: dict[str: FuncObject] = {}
         self.classes: dict[str: ClassObject] = {}
+        self.modules: dict[str: ModuleObject] = {}
 
         for func in [f for f in dir(Funcs) if not f.startswith('__')]:
             self.add_func(FuncObject(func[:-5], (), None, getattr(Funcs, func)))
@@ -29,6 +31,9 @@ class Environment:
 
     def try_variable(self, name: str) -> Union[VarObject, None]:
         return self.variables.get(name)
+    
+    def remove_variable(self, name: str) -> None:
+        self.variables.pop(name)
 
     def add_func(self, obj: FuncObject) -> None:
         self.functions[obj.name] = obj
@@ -46,7 +51,7 @@ class Environment:
     def add_cls(self, obj: ClassObject) -> None:
         self.classes[obj.name] = obj
 
-    def get_cls(self, name: str) -> Union[ClassObject, NoReturn]:
+    def get_cls(self, name: str) -> Union[ClassObject, None]:
         c = self.classes.get(name)
         if c is None:
             return report_error('Name', f'Unknown class \'{name}\'')
@@ -55,3 +60,16 @@ class Environment:
 
     def try_cls(self, name: str) -> Union[ClassObject, None]:
         return self.classes.get(name)
+
+    def add_module(self, obj: ModuleObject) -> None:
+        self.modules[obj.name] = obj
+
+    def get_module(self, name: str) -> Union[ModuleObject, None]:
+        m = self.modules.get(name)
+        if m is None:
+            return report_error('Name', f'Unknown module \'{name}\'')
+        else:
+            return m
+
+    def try_module(self, name: str) -> Union[ModuleObject, None]:
+        return self.modules.get(name)
