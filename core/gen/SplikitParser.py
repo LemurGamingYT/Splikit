@@ -10,107 +10,104 @@ else:
 
 def serializedATN():
     return [
-        4,1,41,282,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,41,273,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
-        2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,1,0,
-        5,0,42,8,0,10,0,12,0,45,9,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,
-        55,8,1,1,2,1,2,1,2,1,2,1,3,1,3,1,3,1,3,3,3,65,8,3,1,3,1,3,1,3,5,
-        3,70,8,3,10,3,12,3,73,9,3,1,3,1,3,1,3,1,3,3,3,79,8,3,1,3,1,3,1,3,
-        1,3,5,3,85,8,3,10,3,12,3,88,9,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,
-        97,8,3,1,3,1,3,1,3,5,3,102,8,3,10,3,12,3,105,9,3,1,3,3,3,108,8,3,
-        1,4,1,4,1,4,1,4,5,4,114,8,4,10,4,12,4,117,9,4,1,4,1,4,1,5,1,5,1,
-        5,1,5,3,5,125,8,5,1,5,1,5,1,5,5,5,130,8,5,10,5,12,5,133,9,5,1,5,
-        1,5,1,6,5,6,138,8,6,10,6,12,6,141,9,6,1,6,5,6,144,8,6,10,6,12,6,
-        147,9,6,3,6,149,8,6,1,7,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,3,8,160,
-        8,8,1,8,1,8,1,9,1,9,1,9,1,9,5,9,168,8,9,10,9,12,9,171,9,9,1,9,1,
-        9,1,9,1,9,5,9,177,8,9,10,9,12,9,180,9,9,1,9,3,9,183,8,9,1,10,1,10,
-        1,10,1,10,1,10,5,10,190,8,10,10,10,12,10,193,9,10,1,10,1,10,3,10,
-        197,8,10,1,10,1,10,1,11,1,11,1,11,1,11,5,11,205,8,11,10,11,12,11,
-        208,9,11,1,11,1,11,1,12,1,12,1,12,5,12,215,8,12,10,12,12,12,218,
-        9,12,1,13,1,13,1,13,5,13,223,8,13,10,13,12,13,226,9,13,1,14,1,14,
-        1,14,1,14,1,14,3,14,233,8,14,1,14,3,14,236,8,14,1,15,1,15,1,15,1,
-        15,1,15,1,15,1,16,1,16,1,16,1,16,1,16,1,16,5,16,250,8,16,10,16,12,
-        16,253,9,16,1,16,1,16,3,16,257,8,16,1,17,1,17,1,17,1,17,1,17,1,17,
-        3,17,265,8,17,1,18,1,18,1,18,1,18,1,18,1,18,1,18,1,18,3,18,275,8,
-        18,1,18,3,18,278,8,18,1,19,1,19,1,19,0,0,20,0,2,4,6,8,10,12,14,16,
-        18,20,22,24,26,28,30,32,34,36,38,0,1,2,0,15,15,19,30,308,0,43,1,
-        0,0,0,2,54,1,0,0,0,4,56,1,0,0,0,6,107,1,0,0,0,8,109,1,0,0,0,10,120,
-        1,0,0,0,12,148,1,0,0,0,14,150,1,0,0,0,16,156,1,0,0,0,18,163,1,0,
-        0,0,20,184,1,0,0,0,22,200,1,0,0,0,24,211,1,0,0,0,26,219,1,0,0,0,
-        28,227,1,0,0,0,30,237,1,0,0,0,32,256,1,0,0,0,34,264,1,0,0,0,36,277,
-        1,0,0,0,38,279,1,0,0,0,40,42,3,2,1,0,41,40,1,0,0,0,42,45,1,0,0,0,
-        43,41,1,0,0,0,43,44,1,0,0,0,44,1,1,0,0,0,45,43,1,0,0,0,46,55,3,4,
-        2,0,47,55,3,6,3,0,48,55,3,18,9,0,49,55,3,22,11,0,50,55,3,20,10,0,
-        51,55,3,8,4,0,52,55,3,14,7,0,53,55,3,32,16,0,54,46,1,0,0,0,54,47,
-        1,0,0,0,54,48,1,0,0,0,54,49,1,0,0,0,54,50,1,0,0,0,54,51,1,0,0,0,
-        54,52,1,0,0,0,54,53,1,0,0,0,55,3,1,0,0,0,56,57,5,39,0,0,57,58,5,
-        1,0,0,58,59,3,32,16,0,59,5,1,0,0,0,60,61,5,2,0,0,61,62,5,39,0,0,
-        62,64,5,3,0,0,63,65,3,24,12,0,64,63,1,0,0,0,64,65,1,0,0,0,65,66,
-        1,0,0,0,66,67,5,4,0,0,67,71,5,5,0,0,68,70,3,2,1,0,69,68,1,0,0,0,
-        70,73,1,0,0,0,71,69,1,0,0,0,71,72,1,0,0,0,72,74,1,0,0,0,73,71,1,
-        0,0,0,74,108,5,6,0,0,75,76,5,39,0,0,76,78,5,3,0,0,77,79,3,24,12,
-        0,78,77,1,0,0,0,78,79,1,0,0,0,79,80,1,0,0,0,80,81,5,4,0,0,81,82,
-        5,7,0,0,82,86,5,5,0,0,83,85,3,2,1,0,84,83,1,0,0,0,85,88,1,0,0,0,
-        86,84,1,0,0,0,86,87,1,0,0,0,87,89,1,0,0,0,88,86,1,0,0,0,89,108,5,
-        6,0,0,90,91,5,2,0,0,91,92,5,39,0,0,92,93,5,8,0,0,93,94,5,39,0,0,
-        94,96,5,3,0,0,95,97,3,24,12,0,96,95,1,0,0,0,96,97,1,0,0,0,97,98,
-        1,0,0,0,98,99,5,4,0,0,99,103,5,5,0,0,100,102,3,2,1,0,101,100,1,0,
-        0,0,102,105,1,0,0,0,103,101,1,0,0,0,103,104,1,0,0,0,104,106,1,0,
-        0,0,105,103,1,0,0,0,106,108,5,6,0,0,107,60,1,0,0,0,107,75,1,0,0,
-        0,107,90,1,0,0,0,108,7,1,0,0,0,109,110,5,9,0,0,110,111,5,39,0,0,
-        111,115,5,5,0,0,112,114,3,4,2,0,113,112,1,0,0,0,114,117,1,0,0,0,
-        115,113,1,0,0,0,115,116,1,0,0,0,116,118,1,0,0,0,117,115,1,0,0,0,
-        118,119,5,6,0,0,119,9,1,0,0,0,120,121,5,2,0,0,121,122,5,39,0,0,122,
-        124,5,3,0,0,123,125,3,24,12,0,124,123,1,0,0,0,124,125,1,0,0,0,125,
-        126,1,0,0,0,126,127,5,4,0,0,127,131,5,5,0,0,128,130,3,2,1,0,129,
-        128,1,0,0,0,130,133,1,0,0,0,131,129,1,0,0,0,131,132,1,0,0,0,132,
-        134,1,0,0,0,133,131,1,0,0,0,134,135,5,6,0,0,135,11,1,0,0,0,136,138,
-        3,10,5,0,137,136,1,0,0,0,138,141,1,0,0,0,139,137,1,0,0,0,139,140,
-        1,0,0,0,140,149,1,0,0,0,141,139,1,0,0,0,142,144,3,4,2,0,143,142,
-        1,0,0,0,144,147,1,0,0,0,145,143,1,0,0,0,145,146,1,0,0,0,146,149,
-        1,0,0,0,147,145,1,0,0,0,148,139,1,0,0,0,148,145,1,0,0,0,149,13,1,
-        0,0,0,150,151,5,10,0,0,151,152,5,39,0,0,152,153,5,5,0,0,153,154,
-        3,12,6,0,154,155,5,6,0,0,155,15,1,0,0,0,156,157,5,39,0,0,157,159,
-        5,3,0,0,158,160,3,26,13,0,159,158,1,0,0,0,159,160,1,0,0,0,160,161,
-        1,0,0,0,161,162,5,4,0,0,162,17,1,0,0,0,163,164,5,11,0,0,164,165,
-        3,32,16,0,165,169,5,5,0,0,166,168,3,2,1,0,167,166,1,0,0,0,168,171,
-        1,0,0,0,169,167,1,0,0,0,169,170,1,0,0,0,170,172,1,0,0,0,171,169,
-        1,0,0,0,172,182,5,6,0,0,173,174,5,12,0,0,174,178,5,5,0,0,175,177,
-        3,2,1,0,176,175,1,0,0,0,177,180,1,0,0,0,178,176,1,0,0,0,178,179,
-        1,0,0,0,179,181,1,0,0,0,180,178,1,0,0,0,181,183,5,6,0,0,182,173,
-        1,0,0,0,182,183,1,0,0,0,183,19,1,0,0,0,184,196,5,13,0,0,185,186,
-        5,5,0,0,186,191,5,34,0,0,187,188,5,14,0,0,188,190,5,34,0,0,189,187,
-        1,0,0,0,190,193,1,0,0,0,191,189,1,0,0,0,191,192,1,0,0,0,192,194,
-        1,0,0,0,193,191,1,0,0,0,194,197,5,6,0,0,195,197,5,15,0,0,196,185,
-        1,0,0,0,196,195,1,0,0,0,196,197,1,0,0,0,197,198,1,0,0,0,198,199,
-        5,34,0,0,199,21,1,0,0,0,200,201,5,16,0,0,201,202,3,32,16,0,202,206,
-        5,5,0,0,203,205,3,2,1,0,204,203,1,0,0,0,205,208,1,0,0,0,206,204,
-        1,0,0,0,206,207,1,0,0,0,207,209,1,0,0,0,208,206,1,0,0,0,209,210,
-        5,6,0,0,210,23,1,0,0,0,211,216,5,39,0,0,212,213,5,14,0,0,213,215,
-        5,39,0,0,214,212,1,0,0,0,215,218,1,0,0,0,216,214,1,0,0,0,216,217,
-        1,0,0,0,217,25,1,0,0,0,218,216,1,0,0,0,219,224,3,32,16,0,220,221,
-        5,14,0,0,221,223,3,32,16,0,222,220,1,0,0,0,223,226,1,0,0,0,224,222,
-        1,0,0,0,224,225,1,0,0,0,225,27,1,0,0,0,226,224,1,0,0,0,227,228,3,
-        34,17,0,228,229,5,17,0,0,229,235,5,39,0,0,230,232,5,3,0,0,231,233,
-        3,26,13,0,232,231,1,0,0,0,232,233,1,0,0,0,233,234,1,0,0,0,234,236,
-        5,4,0,0,235,230,1,0,0,0,235,236,1,0,0,0,236,29,1,0,0,0,237,238,3,
-        34,17,0,238,239,5,17,0,0,239,240,5,3,0,0,240,241,5,39,0,0,241,242,
-        5,4,0,0,242,31,1,0,0,0,243,257,3,28,14,0,244,257,3,30,15,0,245,251,
-        3,34,17,0,246,247,3,38,19,0,247,248,3,32,16,0,248,250,1,0,0,0,249,
-        246,1,0,0,0,250,253,1,0,0,0,251,249,1,0,0,0,251,252,1,0,0,0,252,
-        257,1,0,0,0,253,251,1,0,0,0,254,255,5,18,0,0,255,257,3,34,17,0,256,
-        243,1,0,0,0,256,244,1,0,0,0,256,245,1,0,0,0,256,254,1,0,0,0,257,
-        33,1,0,0,0,258,259,5,3,0,0,259,260,3,32,16,0,260,261,5,4,0,0,261,
-        265,1,0,0,0,262,265,3,16,8,0,263,265,3,36,18,0,264,258,1,0,0,0,264,
-        262,1,0,0,0,264,263,1,0,0,0,265,35,1,0,0,0,266,278,5,31,0,0,267,
-        278,5,32,0,0,268,278,5,34,0,0,269,278,5,35,0,0,270,278,5,36,0,0,
-        271,278,5,39,0,0,272,274,5,5,0,0,273,275,3,26,13,0,274,273,1,0,0,
-        0,274,275,1,0,0,0,275,276,1,0,0,0,276,278,5,6,0,0,277,266,1,0,0,
-        0,277,267,1,0,0,0,277,268,1,0,0,0,277,269,1,0,0,0,277,270,1,0,0,
-        0,277,271,1,0,0,0,277,272,1,0,0,0,278,37,1,0,0,0,279,280,7,0,0,0,
-        280,39,1,0,0,0,31,43,54,64,71,78,86,96,103,107,115,124,131,139,145,
-        148,159,169,178,182,191,196,206,216,224,232,235,251,256,264,274,
-        277
+        2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,1,0,5,0,40,8,0,
+        10,0,12,0,43,9,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,3,1,53,8,1,1,2,
+        1,2,1,2,1,2,1,3,1,3,1,3,1,3,3,3,63,8,3,1,3,1,3,1,3,5,3,68,8,3,10,
+        3,12,3,71,9,3,1,3,1,3,1,3,1,3,3,3,77,8,3,1,3,1,3,1,3,1,3,5,3,83,
+        8,3,10,3,12,3,86,9,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,95,8,3,1,3,
+        1,3,1,3,5,3,100,8,3,10,3,12,3,103,9,3,1,3,3,3,106,8,3,1,4,1,4,1,
+        4,1,4,5,4,112,8,4,10,4,12,4,115,9,4,1,4,1,4,1,5,1,5,1,5,1,5,3,5,
+        123,8,5,1,5,1,5,1,5,5,5,128,8,5,10,5,12,5,131,9,5,1,5,1,5,1,6,5,
+        6,136,8,6,10,6,12,6,139,9,6,1,6,5,6,142,8,6,10,6,12,6,145,9,6,3,
+        6,147,8,6,1,7,1,7,1,7,1,7,1,7,1,7,1,8,1,8,1,8,3,8,158,8,8,1,8,1,
+        8,1,9,1,9,1,9,1,9,5,9,166,8,9,10,9,12,9,169,9,9,1,9,1,9,1,9,1,9,
+        5,9,175,8,9,10,9,12,9,178,9,9,1,9,3,9,181,8,9,1,10,1,10,1,10,1,10,
+        1,10,5,10,188,8,10,10,10,12,10,191,9,10,1,10,1,10,3,10,195,8,10,
+        1,10,1,10,1,11,1,11,1,11,1,11,5,11,203,8,11,10,11,12,11,206,9,11,
+        1,11,1,11,1,12,1,12,1,12,5,12,213,8,12,10,12,12,12,216,9,12,1,13,
+        1,13,1,13,5,13,221,8,13,10,13,12,13,224,9,13,1,14,1,14,1,14,1,14,
+        1,14,3,14,231,8,14,1,14,3,14,234,8,14,1,15,1,15,1,15,1,15,5,15,240,
+        8,15,10,15,12,15,243,9,15,1,15,1,15,1,15,3,15,248,8,15,1,16,1,16,
+        1,16,1,16,1,16,1,16,3,16,256,8,16,1,17,1,17,1,17,1,17,1,17,1,17,
+        1,17,1,17,3,17,266,8,17,1,17,3,17,269,8,17,1,18,1,18,1,18,0,0,19,
+        0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,0,1,2,0,15,15,
+        19,30,299,0,41,1,0,0,0,2,52,1,0,0,0,4,54,1,0,0,0,6,105,1,0,0,0,8,
+        107,1,0,0,0,10,118,1,0,0,0,12,146,1,0,0,0,14,148,1,0,0,0,16,154,
+        1,0,0,0,18,161,1,0,0,0,20,182,1,0,0,0,22,198,1,0,0,0,24,209,1,0,
+        0,0,26,217,1,0,0,0,28,225,1,0,0,0,30,247,1,0,0,0,32,255,1,0,0,0,
+        34,268,1,0,0,0,36,270,1,0,0,0,38,40,3,2,1,0,39,38,1,0,0,0,40,43,
+        1,0,0,0,41,39,1,0,0,0,41,42,1,0,0,0,42,1,1,0,0,0,43,41,1,0,0,0,44,
+        53,3,4,2,0,45,53,3,6,3,0,46,53,3,18,9,0,47,53,3,22,11,0,48,53,3,
+        20,10,0,49,53,3,8,4,0,50,53,3,14,7,0,51,53,3,30,15,0,52,44,1,0,0,
+        0,52,45,1,0,0,0,52,46,1,0,0,0,52,47,1,0,0,0,52,48,1,0,0,0,52,49,
+        1,0,0,0,52,50,1,0,0,0,52,51,1,0,0,0,53,3,1,0,0,0,54,55,5,39,0,0,
+        55,56,5,1,0,0,56,57,3,30,15,0,57,5,1,0,0,0,58,59,5,2,0,0,59,60,5,
+        39,0,0,60,62,5,3,0,0,61,63,3,24,12,0,62,61,1,0,0,0,62,63,1,0,0,0,
+        63,64,1,0,0,0,64,65,5,4,0,0,65,69,5,5,0,0,66,68,3,2,1,0,67,66,1,
+        0,0,0,68,71,1,0,0,0,69,67,1,0,0,0,69,70,1,0,0,0,70,72,1,0,0,0,71,
+        69,1,0,0,0,72,106,5,6,0,0,73,74,5,39,0,0,74,76,5,3,0,0,75,77,3,24,
+        12,0,76,75,1,0,0,0,76,77,1,0,0,0,77,78,1,0,0,0,78,79,5,4,0,0,79,
+        80,5,7,0,0,80,84,5,5,0,0,81,83,3,2,1,0,82,81,1,0,0,0,83,86,1,0,0,
+        0,84,82,1,0,0,0,84,85,1,0,0,0,85,87,1,0,0,0,86,84,1,0,0,0,87,106,
+        5,6,0,0,88,89,5,2,0,0,89,90,5,39,0,0,90,91,5,8,0,0,91,92,5,39,0,
+        0,92,94,5,3,0,0,93,95,3,24,12,0,94,93,1,0,0,0,94,95,1,0,0,0,95,96,
+        1,0,0,0,96,97,5,4,0,0,97,101,5,5,0,0,98,100,3,2,1,0,99,98,1,0,0,
+        0,100,103,1,0,0,0,101,99,1,0,0,0,101,102,1,0,0,0,102,104,1,0,0,0,
+        103,101,1,0,0,0,104,106,5,6,0,0,105,58,1,0,0,0,105,73,1,0,0,0,105,
+        88,1,0,0,0,106,7,1,0,0,0,107,108,5,9,0,0,108,109,5,39,0,0,109,113,
+        5,5,0,0,110,112,3,4,2,0,111,110,1,0,0,0,112,115,1,0,0,0,113,111,
+        1,0,0,0,113,114,1,0,0,0,114,116,1,0,0,0,115,113,1,0,0,0,116,117,
+        5,6,0,0,117,9,1,0,0,0,118,119,5,2,0,0,119,120,5,39,0,0,120,122,5,
+        3,0,0,121,123,3,24,12,0,122,121,1,0,0,0,122,123,1,0,0,0,123,124,
+        1,0,0,0,124,125,5,4,0,0,125,129,5,5,0,0,126,128,3,2,1,0,127,126,
+        1,0,0,0,128,131,1,0,0,0,129,127,1,0,0,0,129,130,1,0,0,0,130,132,
+        1,0,0,0,131,129,1,0,0,0,132,133,5,6,0,0,133,11,1,0,0,0,134,136,3,
+        10,5,0,135,134,1,0,0,0,136,139,1,0,0,0,137,135,1,0,0,0,137,138,1,
+        0,0,0,138,147,1,0,0,0,139,137,1,0,0,0,140,142,3,4,2,0,141,140,1,
+        0,0,0,142,145,1,0,0,0,143,141,1,0,0,0,143,144,1,0,0,0,144,147,1,
+        0,0,0,145,143,1,0,0,0,146,137,1,0,0,0,146,143,1,0,0,0,147,13,1,0,
+        0,0,148,149,5,10,0,0,149,150,5,39,0,0,150,151,5,5,0,0,151,152,3,
+        12,6,0,152,153,5,6,0,0,153,15,1,0,0,0,154,155,5,39,0,0,155,157,5,
+        3,0,0,156,158,3,26,13,0,157,156,1,0,0,0,157,158,1,0,0,0,158,159,
+        1,0,0,0,159,160,5,4,0,0,160,17,1,0,0,0,161,162,5,11,0,0,162,163,
+        3,30,15,0,163,167,5,5,0,0,164,166,3,2,1,0,165,164,1,0,0,0,166,169,
+        1,0,0,0,167,165,1,0,0,0,167,168,1,0,0,0,168,170,1,0,0,0,169,167,
+        1,0,0,0,170,180,5,6,0,0,171,172,5,12,0,0,172,176,5,5,0,0,173,175,
+        3,2,1,0,174,173,1,0,0,0,175,178,1,0,0,0,176,174,1,0,0,0,176,177,
+        1,0,0,0,177,179,1,0,0,0,178,176,1,0,0,0,179,181,5,6,0,0,180,171,
+        1,0,0,0,180,181,1,0,0,0,181,19,1,0,0,0,182,194,5,13,0,0,183,184,
+        5,5,0,0,184,189,5,34,0,0,185,186,5,14,0,0,186,188,5,34,0,0,187,185,
+        1,0,0,0,188,191,1,0,0,0,189,187,1,0,0,0,189,190,1,0,0,0,190,192,
+        1,0,0,0,191,189,1,0,0,0,192,195,5,6,0,0,193,195,5,15,0,0,194,183,
+        1,0,0,0,194,193,1,0,0,0,194,195,1,0,0,0,195,196,1,0,0,0,196,197,
+        5,34,0,0,197,21,1,0,0,0,198,199,5,16,0,0,199,200,3,30,15,0,200,204,
+        5,5,0,0,201,203,3,2,1,0,202,201,1,0,0,0,203,206,1,0,0,0,204,202,
+        1,0,0,0,204,205,1,0,0,0,205,207,1,0,0,0,206,204,1,0,0,0,207,208,
+        5,6,0,0,208,23,1,0,0,0,209,214,5,39,0,0,210,211,5,14,0,0,211,213,
+        5,39,0,0,212,210,1,0,0,0,213,216,1,0,0,0,214,212,1,0,0,0,214,215,
+        1,0,0,0,215,25,1,0,0,0,216,214,1,0,0,0,217,222,3,30,15,0,218,219,
+        5,14,0,0,219,221,3,30,15,0,220,218,1,0,0,0,221,224,1,0,0,0,222,220,
+        1,0,0,0,222,223,1,0,0,0,223,27,1,0,0,0,224,222,1,0,0,0,225,226,3,
+        32,16,0,226,227,5,17,0,0,227,233,5,39,0,0,228,230,5,3,0,0,229,231,
+        3,26,13,0,230,229,1,0,0,0,230,231,1,0,0,0,231,232,1,0,0,0,232,234,
+        5,4,0,0,233,228,1,0,0,0,233,234,1,0,0,0,234,29,1,0,0,0,235,241,3,
+        32,16,0,236,237,3,36,18,0,237,238,3,30,15,0,238,240,1,0,0,0,239,
+        236,1,0,0,0,240,243,1,0,0,0,241,239,1,0,0,0,241,242,1,0,0,0,242,
+        248,1,0,0,0,243,241,1,0,0,0,244,245,5,18,0,0,245,248,3,32,16,0,246,
+        248,3,28,14,0,247,235,1,0,0,0,247,244,1,0,0,0,247,246,1,0,0,0,248,
+        31,1,0,0,0,249,250,5,3,0,0,250,251,3,30,15,0,251,252,5,4,0,0,252,
+        256,1,0,0,0,253,256,3,16,8,0,254,256,3,34,17,0,255,249,1,0,0,0,255,
+        253,1,0,0,0,255,254,1,0,0,0,256,33,1,0,0,0,257,269,5,31,0,0,258,
+        269,5,32,0,0,259,269,5,34,0,0,260,269,5,35,0,0,261,269,5,36,0,0,
+        262,269,5,39,0,0,263,265,5,5,0,0,264,266,3,26,13,0,265,264,1,0,0,
+        0,265,266,1,0,0,0,266,267,1,0,0,0,267,269,5,6,0,0,268,257,1,0,0,
+        0,268,258,1,0,0,0,268,259,1,0,0,0,268,260,1,0,0,0,268,261,1,0,0,
+        0,268,262,1,0,0,0,268,263,1,0,0,0,269,35,1,0,0,0,270,271,7,0,0,0,
+        271,37,1,0,0,0,31,41,52,62,69,76,84,94,101,105,113,122,129,137,143,
+        146,157,167,176,180,189,194,204,214,222,230,233,241,247,255,265,
+        268
     ]
 
 class SplikitParser ( Parser ):
@@ -157,17 +154,16 @@ class SplikitParser ( Parser ):
     RULE_parameterList = 12
     RULE_argumentList = 13
     RULE_getAttr = 14
-    RULE_castObject = 15
-    RULE_expression = 16
-    RULE_primaryExpression = 17
-    RULE_atomExpression = 18
-    RULE_operator = 19
+    RULE_expression = 15
+    RULE_primaryExpression = 16
+    RULE_atomExpression = 17
+    RULE_operator = 18
 
     ruleNames =  [ "program", "statement", "variableDeclaration", "functionDeclaration", 
                    "enumDeclaration", "clsFuncDeclaration", "classDeclarations", 
                    "classDeclaration", "functionCall", "ifStatement", "importStatement", 
                    "whileStatement", "parameterList", "argumentList", "getAttr", 
-                   "castObject", "expression", "primaryExpression", "atomExpression", 
+                   "expression", "primaryExpression", "atomExpression", 
                    "operator" ]
 
     EOF = Token.EOF
@@ -255,13 +251,13 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 43
+            self.state = 41
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457688620) != 0):
-                self.state = 40
+                self.state = 38
                 self.statement()
-                self.state = 45
+                self.state = 43
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -330,54 +326,54 @@ class SplikitParser ( Parser ):
         localctx = SplikitParser.StatementContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_statement)
         try:
-            self.state = 54
+            self.state = 52
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,1,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 46
+                self.state = 44
                 self.variableDeclaration()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 47
+                self.state = 45
                 self.functionDeclaration()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 48
+                self.state = 46
                 self.ifStatement()
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 49
+                self.state = 47
                 self.whileStatement()
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 50
+                self.state = 48
                 self.importStatement()
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 51
+                self.state = 49
                 self.enumDeclaration()
                 pass
 
             elif la_ == 7:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 52
+                self.state = 50
                 self.classDeclaration()
                 pass
 
             elif la_ == 8:
                 self.enterOuterAlt(localctx, 8)
-                self.state = 53
+                self.state = 51
                 self.expression()
                 pass
 
@@ -423,11 +419,11 @@ class SplikitParser ( Parser ):
         self.enterRule(localctx, 4, self.RULE_variableDeclaration)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 56
+            self.state = 54
             self.match(SplikitParser.Identifier)
-            self.state = 57
+            self.state = 55
             self.match(SplikitParser.T__0)
-            self.state = 58
+            self.state = 56
             self.expression()
         except RecognitionException as re:
             localctx.exception = re
@@ -480,112 +476,112 @@ class SplikitParser ( Parser ):
         self.enterRule(localctx, 6, self.RULE_functionDeclaration)
         self._la = 0 # Token type
         try:
-            self.state = 107
+            self.state = 105
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,8,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 60
+                self.state = 58
                 self.match(SplikitParser.T__1)
-                self.state = 61
+                self.state = 59
                 self.match(SplikitParser.Identifier)
-                self.state = 62
+                self.state = 60
                 self.match(SplikitParser.T__2)
-                self.state = 64
+                self.state = 62
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==39:
-                    self.state = 63
+                    self.state = 61
                     self.parameterList()
 
 
-                self.state = 66
+                self.state = 64
                 self.match(SplikitParser.T__3)
-                self.state = 67
+                self.state = 65
                 self.match(SplikitParser.T__4)
-                self.state = 71
+                self.state = 69
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457688620) != 0):
-                    self.state = 68
+                    self.state = 66
                     self.statement()
-                    self.state = 73
+                    self.state = 71
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 74
+                self.state = 72
                 self.match(SplikitParser.T__5)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 75
+                self.state = 73
                 self.match(SplikitParser.Identifier)
-                self.state = 76
+                self.state = 74
                 self.match(SplikitParser.T__2)
-                self.state = 78
+                self.state = 76
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==39:
-                    self.state = 77
+                    self.state = 75
                     self.parameterList()
 
 
-                self.state = 80
+                self.state = 78
                 self.match(SplikitParser.T__3)
-                self.state = 81
+                self.state = 79
                 self.match(SplikitParser.T__6)
-                self.state = 82
+                self.state = 80
                 self.match(SplikitParser.T__4)
-                self.state = 86
+                self.state = 84
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457688620) != 0):
-                    self.state = 83
+                    self.state = 81
                     self.statement()
-                    self.state = 88
+                    self.state = 86
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 89
+                self.state = 87
                 self.match(SplikitParser.T__5)
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 90
+                self.state = 88
                 self.match(SplikitParser.T__1)
+                self.state = 89
+                self.match(SplikitParser.Identifier)
+                self.state = 90
+                self.match(SplikitParser.T__7)
                 self.state = 91
                 self.match(SplikitParser.Identifier)
                 self.state = 92
-                self.match(SplikitParser.T__7)
-                self.state = 93
-                self.match(SplikitParser.Identifier)
-                self.state = 94
                 self.match(SplikitParser.T__2)
-                self.state = 96
+                self.state = 94
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if _la==39:
-                    self.state = 95
+                    self.state = 93
                     self.parameterList()
 
 
-                self.state = 98
+                self.state = 96
                 self.match(SplikitParser.T__3)
-                self.state = 99
+                self.state = 97
                 self.match(SplikitParser.T__4)
-                self.state = 103
+                self.state = 101
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457688620) != 0):
-                    self.state = 100
+                    self.state = 98
                     self.statement()
-                    self.state = 105
+                    self.state = 103
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 106
+                self.state = 104
                 self.match(SplikitParser.T__5)
                 pass
 
@@ -635,23 +631,23 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 109
+            self.state = 107
             self.match(SplikitParser.T__8)
-            self.state = 110
+            self.state = 108
             self.match(SplikitParser.Identifier)
-            self.state = 111
+            self.state = 109
             self.match(SplikitParser.T__4)
-            self.state = 115
+            self.state = 113
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==39:
-                self.state = 112
+                self.state = 110
                 self.variableDeclaration()
-                self.state = 117
+                self.state = 115
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 118
+            self.state = 116
             self.match(SplikitParser.T__5)
         except RecognitionException as re:
             localctx.exception = re
@@ -702,35 +698,35 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 120
+            self.state = 118
             self.match(SplikitParser.T__1)
-            self.state = 121
+            self.state = 119
             self.match(SplikitParser.Identifier)
-            self.state = 122
+            self.state = 120
             self.match(SplikitParser.T__2)
-            self.state = 124
+            self.state = 122
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==39:
-                self.state = 123
+                self.state = 121
                 self.parameterList()
 
 
-            self.state = 126
+            self.state = 124
             self.match(SplikitParser.T__3)
-            self.state = 127
+            self.state = 125
             self.match(SplikitParser.T__4)
-            self.state = 131
+            self.state = 129
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457688620) != 0):
-                self.state = 128
+                self.state = 126
                 self.statement()
-                self.state = 133
+                self.state = 131
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 134
+            self.state = 132
             self.match(SplikitParser.T__5)
         except RecognitionException as re:
             localctx.exception = re
@@ -780,18 +776,18 @@ class SplikitParser ( Parser ):
         self.enterRule(localctx, 12, self.RULE_classDeclarations)
         self._la = 0 # Token type
         try:
-            self.state = 148
+            self.state = 146
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,14,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 139
+                self.state = 137
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==2:
-                    self.state = 136
+                    self.state = 134
                     self.clsFuncDeclaration()
-                    self.state = 141
+                    self.state = 139
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -799,13 +795,13 @@ class SplikitParser ( Parser ):
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 145
+                self.state = 143
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==39:
-                    self.state = 142
+                    self.state = 140
                     self.variableDeclaration()
-                    self.state = 147
+                    self.state = 145
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
@@ -853,15 +849,15 @@ class SplikitParser ( Parser ):
         self.enterRule(localctx, 14, self.RULE_classDeclaration)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 150
+            self.state = 148
             self.match(SplikitParser.T__9)
-            self.state = 151
+            self.state = 149
             self.match(SplikitParser.Identifier)
-            self.state = 152
+            self.state = 150
             self.match(SplikitParser.T__4)
-            self.state = 153
+            self.state = 151
             self.classDeclarations()
-            self.state = 154
+            self.state = 152
             self.match(SplikitParser.T__5)
         except RecognitionException as re:
             localctx.exception = re
@@ -905,19 +901,19 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 156
+            self.state = 154
             self.match(SplikitParser.Identifier)
-            self.state = 157
+            self.state = 155
             self.match(SplikitParser.T__2)
-            self.state = 159
+            self.state = 157
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457611304) != 0):
-                self.state = 158
+                self.state = 156
                 self.argumentList()
 
 
-            self.state = 161
+            self.state = 159
             self.match(SplikitParser.T__3)
         except RecognitionException as re:
             localctx.exception = re
@@ -965,43 +961,43 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 163
+            self.state = 161
             self.match(SplikitParser.T__10)
-            self.state = 164
+            self.state = 162
             self.expression()
-            self.state = 165
+            self.state = 163
             self.match(SplikitParser.T__4)
-            self.state = 169
+            self.state = 167
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457688620) != 0):
-                self.state = 166
+                self.state = 164
                 self.statement()
-                self.state = 171
+                self.state = 169
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 172
+            self.state = 170
             self.match(SplikitParser.T__5)
-            self.state = 182
+            self.state = 180
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==12:
-                self.state = 173
+                self.state = 171
                 self.match(SplikitParser.T__11)
-                self.state = 174
+                self.state = 172
                 self.match(SplikitParser.T__4)
-                self.state = 178
+                self.state = 176
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457688620) != 0):
-                    self.state = 175
+                    self.state = 173
                     self.statement()
-                    self.state = 180
+                    self.state = 178
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 181
+                self.state = 179
                 self.match(SplikitParser.T__5)
 
 
@@ -1046,40 +1042,40 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 184
+            self.state = 182
             self.match(SplikitParser.T__12)
-            self.state = 196
+            self.state = 194
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [5]:
-                self.state = 185
+                self.state = 183
                 self.match(SplikitParser.T__4)
-                self.state = 186
+                self.state = 184
                 self.match(SplikitParser.StringLiteral)
-                self.state = 191
+                self.state = 189
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 while _la==14:
-                    self.state = 187
+                    self.state = 185
                     self.match(SplikitParser.T__13)
-                    self.state = 188
+                    self.state = 186
                     self.match(SplikitParser.StringLiteral)
-                    self.state = 193
+                    self.state = 191
                     self._errHandler.sync(self)
                     _la = self._input.LA(1)
 
-                self.state = 194
+                self.state = 192
                 self.match(SplikitParser.T__5)
                 pass
             elif token in [15]:
-                self.state = 195
+                self.state = 193
                 self.match(SplikitParser.T__14)
                 pass
             elif token in [34]:
                 pass
             else:
                 pass
-            self.state = 198
+            self.state = 196
             self.match(SplikitParser.StringLiteral)
         except RecognitionException as re:
             localctx.exception = re
@@ -1127,23 +1123,23 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 200
+            self.state = 198
             self.match(SplikitParser.T__15)
-            self.state = 201
+            self.state = 199
             self.expression()
-            self.state = 202
+            self.state = 200
             self.match(SplikitParser.T__4)
-            self.state = 206
+            self.state = 204
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457688620) != 0):
-                self.state = 203
+                self.state = 201
                 self.statement()
-                self.state = 208
+                self.state = 206
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 209
+            self.state = 207
             self.match(SplikitParser.T__5)
         except RecognitionException as re:
             localctx.exception = re
@@ -1186,17 +1182,17 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 211
+            self.state = 209
             self.match(SplikitParser.Identifier)
-            self.state = 216
+            self.state = 214
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==14:
-                self.state = 212
+                self.state = 210
                 self.match(SplikitParser.T__13)
-                self.state = 213
+                self.state = 211
                 self.match(SplikitParser.Identifier)
-                self.state = 218
+                self.state = 216
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1242,17 +1238,17 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 219
+            self.state = 217
             self.expression()
-            self.state = 224
+            self.state = 222
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==14:
-                self.state = 220
+                self.state = 218
                 self.match(SplikitParser.T__13)
-                self.state = 221
+                self.state = 219
                 self.expression()
-                self.state = 226
+                self.state = 224
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -1302,81 +1298,30 @@ class SplikitParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 227
+            self.state = 225
             self.primaryExpression()
-            self.state = 228
+            self.state = 226
             self.match(SplikitParser.T__16)
-            self.state = 229
+            self.state = 227
             self.match(SplikitParser.Identifier)
-            self.state = 235
+            self.state = 233
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,25,self._ctx)
             if la_ == 1:
-                self.state = 230
+                self.state = 228
                 self.match(SplikitParser.T__2)
-                self.state = 232
+                self.state = 230
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457611304) != 0):
-                    self.state = 231
+                    self.state = 229
                     self.argumentList()
 
 
-                self.state = 234
+                self.state = 232
                 self.match(SplikitParser.T__3)
 
 
-        except RecognitionException as re:
-            localctx.exception = re
-            self._errHandler.reportError(self, re)
-            self._errHandler.recover(self, re)
-        finally:
-            self.exitRule()
-        return localctx
-
-
-    class CastObjectContext(ParserRuleContext):
-        __slots__ = 'parser'
-
-        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
-            super().__init__(parent, invokingState)
-            self.parser = parser
-
-        def primaryExpression(self):
-            return self.getTypedRuleContext(SplikitParser.PrimaryExpressionContext,0)
-
-
-        def Identifier(self):
-            return self.getToken(SplikitParser.Identifier, 0)
-
-        def getRuleIndex(self):
-            return SplikitParser.RULE_castObject
-
-        def accept(self, visitor:ParseTreeVisitor):
-            if hasattr( visitor, "visitCastObject" ):
-                return visitor.visitCastObject(self)
-            else:
-                return visitor.visitChildren(self)
-
-
-
-
-    def castObject(self):
-
-        localctx = SplikitParser.CastObjectContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 30, self.RULE_castObject)
-        try:
-            self.enterOuterAlt(localctx, 1)
-            self.state = 237
-            self.primaryExpression()
-            self.state = 238
-            self.match(SplikitParser.T__16)
-            self.state = 239
-            self.match(SplikitParser.T__2)
-            self.state = 240
-            self.match(SplikitParser.Identifier)
-            self.state = 241
-            self.match(SplikitParser.T__3)
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -1392,14 +1337,6 @@ class SplikitParser ( Parser ):
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
-
-        def getAttr(self):
-            return self.getTypedRuleContext(SplikitParser.GetAttrContext,0)
-
-
-        def castObject(self):
-            return self.getTypedRuleContext(SplikitParser.CastObjectContext,0)
-
 
         def primaryExpression(self):
             return self.getTypedRuleContext(SplikitParser.PrimaryExpressionContext,0)
@@ -1419,6 +1356,10 @@ class SplikitParser ( Parser ):
                 return self.getTypedRuleContext(SplikitParser.ExpressionContext,i)
 
 
+        def getAttr(self):
+            return self.getTypedRuleContext(SplikitParser.GetAttrContext,0)
+
+
         def getRuleIndex(self):
             return SplikitParser.RULE_expression
 
@@ -1434,48 +1375,42 @@ class SplikitParser ( Parser ):
     def expression(self):
 
         localctx = SplikitParser.ExpressionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 32, self.RULE_expression)
+        self.enterRule(localctx, 30, self.RULE_expression)
         try:
-            self.state = 256
+            self.state = 247
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,27,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 243
-                self.getAttr()
-                pass
-
-            elif la_ == 2:
-                self.enterOuterAlt(localctx, 2)
-                self.state = 244
-                self.castObject()
-                pass
-
-            elif la_ == 3:
-                self.enterOuterAlt(localctx, 3)
-                self.state = 245
+                self.state = 235
                 self.primaryExpression()
-                self.state = 251
+                self.state = 241
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,26,self._ctx)
                 while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                     if _alt==1:
-                        self.state = 246
+                        self.state = 236
                         self.operator()
-                        self.state = 247
+                        self.state = 237
                         self.expression() 
-                    self.state = 253
+                    self.state = 243
                     self._errHandler.sync(self)
                     _alt = self._interp.adaptivePredict(self._input,26,self._ctx)
 
                 pass
 
-            elif la_ == 4:
-                self.enterOuterAlt(localctx, 4)
-                self.state = 254
+            elif la_ == 2:
+                self.enterOuterAlt(localctx, 2)
+                self.state = 244
                 self.match(SplikitParser.T__17)
-                self.state = 255
+                self.state = 245
                 self.primaryExpression()
+                pass
+
+            elif la_ == 3:
+                self.enterOuterAlt(localctx, 3)
+                self.state = 246
+                self.getAttr()
                 pass
 
 
@@ -1522,30 +1457,30 @@ class SplikitParser ( Parser ):
     def primaryExpression(self):
 
         localctx = SplikitParser.PrimaryExpressionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 34, self.RULE_primaryExpression)
+        self.enterRule(localctx, 32, self.RULE_primaryExpression)
         try:
-            self.state = 264
+            self.state = 255
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,28,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 258
+                self.state = 249
                 self.match(SplikitParser.T__2)
-                self.state = 259
+                self.state = 250
                 self.expression()
-                self.state = 260
+                self.state = 251
                 self.match(SplikitParser.T__3)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 262
+                self.state = 253
                 self.functionCall()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 263
+                self.state = 254
                 self.atomExpression()
                 pass
 
@@ -1603,55 +1538,55 @@ class SplikitParser ( Parser ):
     def atomExpression(self):
 
         localctx = SplikitParser.AtomExpressionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 36, self.RULE_atomExpression)
+        self.enterRule(localctx, 34, self.RULE_atomExpression)
         self._la = 0 # Token type
         try:
-            self.state = 277
+            self.state = 268
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [31]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 266
+                self.state = 257
                 self.match(SplikitParser.IntegerLiteral)
                 pass
             elif token in [32]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 267
+                self.state = 258
                 self.match(SplikitParser.DecimalLiteral)
                 pass
             elif token in [34]:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 268
+                self.state = 259
                 self.match(SplikitParser.StringLiteral)
                 pass
             elif token in [35]:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 269
+                self.state = 260
                 self.match(SplikitParser.BooleanLiteral)
                 pass
             elif token in [36]:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 270
+                self.state = 261
                 self.match(SplikitParser.NilLiteral)
                 pass
             elif token in [39]:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 271
+                self.state = 262
                 self.match(SplikitParser.Identifier)
                 pass
             elif token in [5]:
                 self.enterOuterAlt(localctx, 7)
-                self.state = 272
+                self.state = 263
                 self.match(SplikitParser.T__4)
-                self.state = 274
+                self.state = 265
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if (((_la) & ~0x3f) == 0 and ((1 << _la) & 676457611304) != 0):
-                    self.state = 273
+                    self.state = 264
                     self.argumentList()
 
 
-                self.state = 276
+                self.state = 267
                 self.match(SplikitParser.T__5)
                 pass
             else:
@@ -1689,11 +1624,11 @@ class SplikitParser ( Parser ):
     def operator(self):
 
         localctx = SplikitParser.OperatorContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 38, self.RULE_operator)
+        self.enterRule(localctx, 36, self.RULE_operator)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 279
+            self.state = 270
             _la = self._input.LA(1)
             if not((((_la) & ~0x3f) == 0 and ((1 << _la) & 2146992128) != 0)):
                 self._errHandler.recoverInline(self)

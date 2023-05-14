@@ -84,11 +84,6 @@ class SplikitVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by SplikitParser#castObject.
-    def visitCastObject(self, ctx:SplikitParser.CastObjectContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by SplikitParser#expression.
     def visitExpression(self, ctx:SplikitParser.ExpressionContext):
         return self.visitChildren(ctx)

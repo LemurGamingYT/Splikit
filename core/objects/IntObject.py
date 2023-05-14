@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from ..error import report_error
 from typing import Any
 
 @dataclass()
@@ -6,6 +7,13 @@ class IntObject:
     value: int
 
     __type__: str = field(init=False, repr=False, default='int')
+
+    def AsString(self, _: tuple[Any, ...] = None, v = None):
+        from .StringObject import StringObject
+        try:
+            return StringObject(str(self.value))
+        except ValueError:
+            return report_error('Type', f'Invalid cast type \'{self.type}\' to \'string\'')
 
     def repr(self) -> str:
         return str(self.value)

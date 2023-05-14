@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, NoReturn
 from . import get_arg
 from ..objects import *
 from . import report_argument_type_error, is_instance_type
@@ -12,6 +12,19 @@ class Funcs:
             print(get_arg(0, args))
 
         return NilObject()
+
+    @staticmethod
+    def Exit_func(_: tuple[Any, ...], v) -> NoReturn:
+        exit(0)
+
+    @staticmethod
+    def ExecuteString_func(args: tuple[Any, ...], _) -> NilObject:
+        from main import main
+        string = get_arg(0, args)
+        if is_instance_type(string, StringObject):
+            main(string.value)
+
+            return NilObject()
 
     @staticmethod
     def AllObjects_func(_: tuple[Any, ...], visitor) -> ArrayObject:

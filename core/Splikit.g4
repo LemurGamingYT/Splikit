@@ -41,8 +41,8 @@ parameterList: Identifier (',' Identifier)*;
 argumentList: expression (',' expression)*;
 
 getAttr: primaryExpression '.' Identifier ('(' argumentList? ')')?;
-castObject: primaryExpression '.' '(' Identifier ')';
-expression: getAttr | castObject | primaryExpression (operator expression)* | '!' primaryExpression;
+//castObject: primaryExpression '.' '(' Identifier ')'; // TODO: fix casting
+expression: primaryExpression (operator expression)* | '!' primaryExpression | getAttr;
 
 primaryExpression: '(' expression ')' | functionCall | atomExpression;
 

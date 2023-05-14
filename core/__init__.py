@@ -152,21 +152,17 @@ class Visitor(SplikitVisitor):
 
         return getattr(obj, attr)(args)
 
-    def visitCastObject(self, ctx:SplikitParser.CastObjectContext):
-        expr = self.visit(ctx.primaryExpression())
-        typ = ctx.Identifier().getText()
-
-        try:
-            return getattr(expr, f'As{typ.title()}')()
-        except AttributeError:
-            return report_error('Type', f'Invalid cast type \'{expr.type}\' to \'{typ}\'')
+    # def visitCastObject(self, ctx:SplikitParser.CastObjectContext):
+    #     expr = self.visit(ctx.primaryExpression())
+    #     typ = ctx.Identifier().getText()
+    #
+    #     try:
+    #         return getattr(expr, f'As{typ.title()}')()
+    #     except AttributeError:
+    #         return report_error('Type', f'Invalid cast type \'{expr.type}\' to \'{typ}\'')
 
     def visitExpression(self, ctx:SplikitParser.ExpressionContext):
-        if ctx.getAttr() is not None:
-            return self.visit(ctx.getAttr())
-        elif ctx.castObject() is not None:
-            return self.visit(ctx.castObject())
-        elif ctx.operator() is not None:
+        if ctx.operator() is not None:
             if ctx.primaryExpression() is None:
                 return
 
@@ -191,9 +187,17 @@ class Visitor(SplikitVisitor):
 
             return primary
         elif ctx.getText().startswith('!'):
-            return self.visit(ctx.primaryExpression()).__not__()
+            try:
+                return self.visit(ctx.primaryExpression()).__not__()
+            except TypeError:
+                return report_error('Type',
+                                    f'Invalid type \'{self.visit(ctx.primaryExpression()).type}\' for operator \'!\'')
         elif ctx.primaryExpression() is not None:
             return self.visit(ctx.primaryExpression())
+        elif ctx.getAttr() is not None:
+            return self.visit(ctx.getAttr())
+        # elif ctx.castObject() is not None:
+        #     return self.visit(ctx.castObject())
 
         return NilObject()
 
