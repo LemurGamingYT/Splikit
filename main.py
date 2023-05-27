@@ -1,9 +1,16 @@
+"""
+Splikit
+
+A language made in Python.
+
+"""
+
+from core.error import report_error, SplikitErrorListener
 from antlr4 import CommonTokenStream, FileStream
 from core.gen.SplikitParser import SplikitParser
 from core.gen.SplikitLexer import SplikitLexer
 from core.env import Environment
 from time import perf_counter
-from core.error import report_error
 # from typing import Callable
 from os.path import isdir
 from core import Visitor
@@ -36,6 +43,7 @@ def main(f: str) -> None:
 
     parser = SplikitParser(tokens)
     parser.removeErrorListeners()
+    parser.addErrorListener(SplikitErrorListener())
 
     tree = parser.program()
 
@@ -45,8 +53,8 @@ def main(f: str) -> None:
     visitor.visit(tree)
 
     end = perf_counter()
-    _ = end - start
-    # print(f'Execution took: {elapsed * 1000}ms')
+    elapsed = end - start
+    print(f'Execution took: {round(elapsed * 1000, 6)}ms')
 
 
 if __name__ == '__main__' and len(argv) > 1:

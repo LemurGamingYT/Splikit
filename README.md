@@ -5,22 +5,17 @@
 
 Splikit is a language that has just been created so expect many bugs.
 Also note that this language is extremely slow.
+If you want to try the language without downloading then you can use [This link](https://replit.com/@LemurGamingYT2/Splikit?v=1)
 
 ---
 
 ### Roadmap:
 
 **Modules**
-- Json - A JSON library support
-- System - Like os and sys combined (from Python)
-- Obfuscator - Obfuscator for Jade
-- AdvancedCls - A library for creating advanced classes (Like dataclasses from Python)
 
 ---
 
 **Built-in classes**
-- Array (non-new able):
-  - Empty()
 
 ---
 

@@ -18,7 +18,7 @@ class Funcs:
         exit(0)
 
     @staticmethod
-    def ExecuteString_func(args: tuple[Any, ...], _) -> NilObject:
+    def ExecuteFile_func(args: tuple[Any, ...], _) -> NilObject:
         from main import main
         string = get_arg(0, args)
         if is_instance_type(string, StringObject):
@@ -34,31 +34,25 @@ class Funcs:
             [obj for obj in visitor.env.classes.values()] + \
             [obj for obj in visitor.env.modules.values()])
 
+    @staticmethod
+    def Call_func(args: tuple[Any, ...], visitor) -> Any:
+        func = get_arg(0, args)
+        a = get_arg(1, args, optional=True)
+        if a is None:
+            if is_instance_type(func, FuncObject):
+                return func.call((), visitor)
+        else:
+            if is_instance_type(func, FuncObject):
+                try:
+                    return func.call(a.value, visitor)
+                except TypeError:
+                    return func.call(a.value)
+
     # @staticmethod
     # def Splik_func(args: tuple[Any, ...], _):
     #     file = get_arg(0, args)
     #     if is_instance_type(file, StringObject, expected_type='string'):
     #         main(file.value)
-
-    @staticmethod
-    def Any_func(args: tuple[Any, ...], _) -> BoolObject:
-        arr = get_arg(0, args)
-        if is_instance_type(arr, ArrayObject):
-            for val in arr.value:
-                if isinstance(val, BoolObject) and val:
-                    return BoolObject(True)
-
-            return BoolObject(False)
-
-    @staticmethod
-    def All_func(args: tuple[Any, ...], _) -> BoolObject:
-        arr = get_arg(0, args)
-        if is_instance_type(arr, ArrayObject):
-            for val in arr.value:
-                if isinstance(val, BoolObject) and val:
-                    return BoolObject(False)
-
-            return BoolObject(True)
 
     @staticmethod
     def Len_func(args: tuple[Any, ...], _) -> IntObject:
@@ -76,23 +70,17 @@ class Funcs:
     @staticmethod
     def IsAlpha_func(args: tuple[Any, ...], _) -> BoolObject:
         value = get_arg(0, args)
-        if isinstance(value, StringObject):
+        if is_instance_type(value, StringObject):
             return BoolObject(value.value.isalpha())
-
-        return report_argument_type_error('string', value.type)
 
     @staticmethod
     def IsDigit_func(args: tuple[Any, ...], _) -> BoolObject:
         value = get_arg(0, args)
-        if isinstance(value, StringObject):
+        if is_instance_type(value, StringObject):
             return BoolObject(value.value.isdigit())
-
-        return report_argument_type_error('string', value.type)
 
     @staticmethod
     def Prompt_func(args: tuple[Any, ...], _) -> StringObject:
         prompt = get_arg(0, args)
-        if isinstance(prompt, StringObject):
+        if is_instance_type(prompt, StringObject):
             return StringObject(input(prompt.value))
-
-        return report_argument_type_error('string', prompt.type)

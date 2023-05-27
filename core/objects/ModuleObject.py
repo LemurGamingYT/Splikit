@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from .FuncObject import FuncObject
 
 @dataclass()
 class ModuleObject:
@@ -9,6 +8,10 @@ class ModuleObject:
 
     def repr(self) -> str:
         return f'Module \'{self.name}\''
+    
+    @property
+    def type(self) -> str:
+        return 'module'
 
     def __import__(self, env) -> None:
         env.add_module(self)

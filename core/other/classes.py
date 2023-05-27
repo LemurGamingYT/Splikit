@@ -10,14 +10,20 @@ from math import (
     pi
 )
 
+from copy import copy, deepcopy
 from threading import Thread
 from hashlib import sha256
-from . import get_arg, is_instance_type
+from . import get_arg, is_instance_type, builtin_methods
 from random import randint, choice
 from ..objects import *
 from ..error import report_error
 from typing import Any
 from sys import stdout
+
+simple_suffixes = [
+    '', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'N', 'Dc', 'Ud', 'Dd', 'Td', 'Qua', 'Qui',
+    'Sxd', 'Spd', 'Ocd', 'Nod', 'Vg', 'UVg', 'TVg', 'QaVg', 'QiVg', 'SxVg', 'SpVg', 'OcVg', 'NVg'
+]
 
 def generate_cls(cls) -> ClassObject:
     attrs = dir(cls)
@@ -31,7 +37,7 @@ def generate_cls(cls) -> ClassObject:
         else:
             attributes[attr] = getattr(cls, attr)
 
-    return ClassObject(cls.__name__, attributes, methods)
+    return ClassObject(cls.__name__, attributes, methods, cls)
 
 
 class Logging:
@@ -60,6 +66,12 @@ class DictionaryObject:
     def __init__(self):
         self.__dict = {}
 
+    def __setitem__(self, key, value):
+        self.__dict[key] = value
+
+    def __repr__(self) -> str:
+        return str(self.__dict)
+
     def Update(self, args: tuple[Any, ...], _) -> NilObject:
         key = get_arg(0, args)
         value = get_arg(1, args)
@@ -70,6 +82,12 @@ class DictionaryObject:
     def Get(self, args: tuple[Any, ...], _) -> Any:
         key = get_arg(0, args)
         return self.__dict.get(key.value) if self.__dict.get(key.value) is not None else NilObject()
+
+    def Print(self, _: tuple[Any, ...], v) -> NilObject:
+        for key, value in self.__dict.items():
+            stdout.write(f'{key}: {value}\n')
+
+        return NilObject()
 
 class Classes:
     class Math:
@@ -94,9 +112,9 @@ class Classes:
             val2 = get_arg(1, args)
             if is_instance_type(val1, (IntObject, FloatObject)):
                 if is_instance_type(val2, (IntObject, FloatObject)):
-                    if val2 < val1:
+                    if val2 > val1:
                         return val2
-                    elif val1 < val2:
+                    elif val1 > val2:
                         return val1
                     else:
                         return val1
@@ -215,13 +233,10 @@ class Classes:
         def IsPrime(args: tuple[Any, ...], _) -> BoolObject:
             x = get_arg(0, args)
             if is_instance_type(x, IntObject):
-                if x < 2:
-                    return BoolObject(False)
-
-                for i in range(2, int(x.value ** .5) + 1):
-                    if x % i == 0:
+                for i in range(2, x.value):
+                    if x.value % i == 0:
                         return BoolObject(False)
-
+                
                 return BoolObject(True)
 
         @staticmethod
@@ -236,6 +251,18 @@ class Classes:
             arr = get_arg(0, args)
             if is_instance_type(arr, ArrayObject):
                 return choice(arr.value)
+        
+        @staticmethod
+        def SimplifyNumber(args: tuple[Any, ...], _) -> StringObject:
+            x = get_arg(0, args)
+            if is_instance_type(x, (IntObject, FloatObject)):
+                magnitude = 0
+                
+                while abs(x.value) >= 1000 and magnitude < len(simple_suffixes) - 1:
+                    magnitude += 1
+                    x.value /= 1000.0
+                
+                return StringObject('{:.1f}{}'.format(x.value, simple_suffixes[magnitude]))
 
 
     class Attrs:
@@ -243,7 +270,7 @@ class Classes:
         def GetAll(args: tuple[Any, ...], _) -> ArrayObject:
             obj = get_arg(0, args)
             attrs = []
-            for attr in [attr for attr in dir(obj) if not attr.startswith('__')]:
+            for attr in [attr for attr in dir(obj) if not attr.startswith('__') and not attr in builtin_methods]:
                 attrs.append(StringObject(attr))
 
             return ArrayObject(attrs)
@@ -254,7 +281,11 @@ class Classes:
             attr = get_arg(1, args)
             if is_instance_type(attr, StringObject):
                 try:
-                    return FuncObject(attr.value, (), None, getattr(obj, attr.value))
+                    attrib = getattr(obj, attr.value) if not attr.value in builtin_methods else None
+                    if attrib is None:
+                        return report_error('Attribute', f'\'{obj.repr()}\' has no attribute \'{attr.value}\'')
+
+                    return FuncObject(attr.value, (), None, attrib)
                 except AttributeError:
                     return report_error('Attribute', f'\'{obj.repr()}\' has no attribute \'{attr.value}\'')
 
@@ -314,9 +345,79 @@ class Classes:
                 return NilObject()
 
 
+    class Array:
+        @staticmethod
+        def Empty(_: tuple[Any, ...], v) -> ArrayObject:
+            return ArrayObject([])
+
+        @staticmethod
+        def Copy(args: tuple[Any, ...], _) -> ArrayObject:
+            arr = get_arg(0, args)
+            if is_instance_type(arr, ArrayObject):
+                return ArrayObject(copy(arr.value))
+
+        @staticmethod
+        def DeepCopy(args: tuple[Any, ...], _) -> ArrayObject:
+            arr = get_arg(0, args)
+            if is_instance_type(arr, ArrayObject):
+                return ArrayObject(deepcopy(arr.value))
+
+        @staticmethod
+        def Any(args: tuple[Any, ...], _) -> BoolObject:
+            arr = get_arg(0, args)
+            if is_instance_type(arr, ArrayObject):
+                for val in arr.value:
+                    if isinstance(val, BoolObject) and val:
+                        return BoolObject(True)
+
+                return BoolObject(False)
+
+        @staticmethod
+        def All(args: tuple[Any, ...], _) -> BoolObject:
+            arr = get_arg(0, args)
+            if is_instance_type(arr, ArrayObject):
+                for val in arr.value:
+                    if isinstance(val, BoolObject) and val:
+                        return BoolObject(False)
+
+                return BoolObject(True)
+
+
     class Converter:
         @staticmethod
         def IntToBinary(args: tuple[Any, ...], _) -> StringObject:
             value = get_arg(0, args)
             if is_instance_type(value, IntObject):
                 return StringObject(bin(value.value))
+
+        @staticmethod
+        def ToString(args: tuple[Any, ...], _) -> StringObject:
+            try:
+                return StringObject(str(get_arg(0, args)))
+            except ValueError:
+                return report_error('Type',
+                                    f'Invalid type cast to type \'string\' from \'{get_arg(0, args).type}\'')
+
+        @staticmethod
+        def ToInt(args: tuple[Any, ...], _) -> IntObject:
+            try:
+                return IntObject(int(get_arg(0, args)))
+            except ValueError:
+                return report_error('Type',
+                                    f'Invalid type cast to type \'string\' from \'{get_arg(0, args).type}\'')
+
+        @staticmethod
+        def ToFloat(args: tuple[Any, ...], _) -> FloatObject:
+            try:
+                return FloatObject(float(get_arg(0, args)))
+            except ValueError:
+                return report_error('Type',
+                                    f'Invalid type cast to type \'string\' from \'{get_arg(0, args).type}\'')
+
+        @staticmethod
+        def ToBoolean(args: tuple[Any, ...], _) -> BoolObject:
+            try:
+                return BoolObject(bool(str(get_arg(0, args)).title()))
+            except ValueError:
+                return report_error('Type',
+                                    f'Invalid type cast to type \'string\' from \'{get_arg(0, args).type}\'')

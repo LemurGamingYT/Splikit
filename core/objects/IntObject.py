@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from ..error import report_error
 from typing import Any
 
-@dataclass()
+@dataclass(unsafe_hash=True)
 class IntObject:
     value: int
 

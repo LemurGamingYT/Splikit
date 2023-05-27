@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Any
 
-@dataclass()
+@dataclass(unsafe_hash=True)
 class FloatObject:
     value: float
 

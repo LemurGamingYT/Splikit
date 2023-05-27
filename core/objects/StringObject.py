@@ -7,7 +7,7 @@ from .FloatObject import FloatObject
 from ..error import report_error
 from ..other import is_instance_type, get_arg
 
-@dataclass()
+@dataclass(unsafe_hash=True)
 class StringObject:
     value: str
 
@@ -23,22 +23,22 @@ class StringObject:
     def type(self) -> str:
         return 'string'
 
-    def Lower(self, _: tuple[Any, ...]):
+    def Lower(self, _: tuple[Any, ...], v):
         return StringObject(self.value.lower())
 
-    def Upper(self, _: tuple[Any, ...]):
+    def Upper(self, _: tuple[Any, ...], v):
         return StringObject(self.value.upper())
 
-    def Title(self, _: tuple[Any, ...]):
+    def Title(self, _: tuple[Any, ...], v):
         return StringObject(self.value.title())
 
-    def Startswith(self, _: tuple[Any, ...]):
+    def Startswith(self, _: tuple[Any, ...], v):
         return BoolObject(self.value.startswith(self.value))
 
-    def Endswith(self, _: tuple[Any, ...]):
+    def Endswith(self, _: tuple[Any, ...], v):
         return BoolObject(self.value.endswith(self.value))
 
-    def ReplaceSubstring(self, args: tuple[Any, ...]):
+    def ReplaceSubstring(self, args: tuple[Any, ...], _):
         substring = get_arg(0, args)
         replacement = get_arg(1, args)
         if is_instance_type(substring, StringObject) and is_instance_type(replacement, StringObject):

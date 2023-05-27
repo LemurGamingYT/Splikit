@@ -1,5 +1,9 @@
 arr = {true, false, false}
-Print(All(arr))
-Print(Any(arr))
+
+test() => {
+    Print(arr)
+}
+
 Print(Len(arr))
 Print(Type(80.2))
+Print(Call(test))

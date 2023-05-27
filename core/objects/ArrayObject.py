@@ -17,13 +17,14 @@ def quicksort(arr):
                 right.append(arr[i])
         return quicksort(left) + [pivot] + quicksort(right)
 
-@dataclass()
+@dataclass(unsafe_hash=True)
 class ArrayObject:
     value: list[Any, ...]
 
     __type__: str = field(init=False, repr=False, default='array')
 
     def repr(self) -> str:
+        print(self.value)
         return f'{{{", ".join(val.repr() for val in self.value)}}}'
 
     @property

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
-
-from ..gen.SplikitParser import SplikitParser
 from typing import Callable, Any, Union
+
 from . import VarObject
+from ..gen.SplikitParser import SplikitParser
+
 
 @dataclass()
 class FuncObject:
@@ -10,6 +11,10 @@ class FuncObject:
     params: tuple[str, ...]
     body: Union[list[SplikitParser.StatementContext], None]
     py: Union[Callable, None]
+    
+    @property
+    def type(self) -> str:
+        return 'func'
 
     def repr(self) -> str:
         return f'Function \'{self.name}\' at {hex(id(self))}'

@@ -1,5 +1,8 @@
-from typing import Any
-from . import is_instance_type, get_arg
+from typing import Any, Union
+from customtkinter import CTk, CTkButton, CTkLabel, CTkFrame
+from pyautogui import (
+    click, leftClick, rightClick, keyDown, keyUp, mouseUp, mouseInfo, mouseDown, displayMousePosition, size)
+from . import is_instance_type, get_arg, infer_type
 from .classes import generate_cls
 from ..objects import *
 from os import getcwd, cpu_count, getenv
@@ -7,7 +10,9 @@ from time import perf_counter, sleep
 from ..error import report_error
 from requests import get, Response
 from requests.exceptions import MissingSchema
-from re import findall, error, sub
+from .classes import DictionaryObject
+from re import findall, error, sub, compile, match
+from json import load
 from sys import argv
 
 
@@ -16,9 +21,6 @@ class Timer:
 
     def __init__(self, time: float):
         self.time = VarObject('time', FloatObject(time))
-
-    def _Since(self, _: tuple[Any, ...], v) -> FloatObject:
-        return FloatObject(perf_counter() - self.time.value.value)
 
 
 class WebResponse:
@@ -34,13 +36,13 @@ class WebResponse:
         self.elapsed = VarObject('elapsed', FloatObject(response.elapsed.total_seconds()))
         self.history = VarObject('history', ArrayObject(response.history))
 
-    def _Close(self, _: tuple[Any, ...], v) -> NilObject:
+    def Close(self, _: tuple[Any, ...], v) -> NilObject:
         self.__response.close()
         return NilObject()
 
 
-class FileReader:
-    __name__ = 'FileReader'
+class File:
+    __name__ = 'FileClass'
 
     def __init__(self, fn: StringObject):
         self.__writeable_file = open(fn.value, 'w')
@@ -50,14 +52,14 @@ class FileReader:
         self.encoding = VarObject('encoding', StringObject(self.__readable_file.encoding))
         self.closed = VarObject('closed', BoolObject(self.__readable_file.closed))
 
-    def _Write(self, args: tuple[Any, ...], v) -> NilObject:
+    def Write(self, args: tuple[Any, ...], v) -> NilObject:
         content = get_arg(0, args)
         if is_instance_type(content, StringObject):
             self.__writeable_file.writelines(content.value.split('\n'))
 
             return NilObject()
 
-    def _Close(self, _: tuple[Any, ...], v) -> NilObject:
+    def Close(self, _: tuple[Any, ...], v) -> NilObject:
         self.__writeable_file.close()
         self.__readable_file.close()
         return NilObject()
@@ -97,13 +99,18 @@ class Lexer:
 
         for pattern, name in self.__rules.items():
             try:
-                findall(pattern, text)
+                regex = compile(pattern)
             except error:
                 return report_error('Type', f'Invalid pattern: {pattern}')
-
-            if findall(pattern, text):
-                for m in findall(pattern, text):
-                    self.__tokens.append(ArrayObject([StringObject(name), StringObject(m)]))
+            
+            while text:
+                m = regex.match(text)
+                if m:
+                    value = m.group(0)
+                    self.__tokens.append(ArrayObject([StringObject(name), StringObject(value)]))
+                    text = text[len(value):].lstrip()
+                else:
+                    break
 
     def Tokenize(self, _: tuple[Any, ...], v) -> ArrayObject:
         self.__tokens = []
@@ -130,6 +137,7 @@ class Args:
     __name__ = 'ParsedArgs'
 
 class ArgumentParser:
+    # TODO: finish argument parser
     __name__ = 'ArgumentParser'
 
     def __init__(self):
@@ -160,6 +168,131 @@ class ArgumentParser:
                         setattr(p, arg.replace('-', ''), NilObject())
 
         return generate_cls(p)
+
+
+class JsonReader(DictionaryObject):
+    __name__ = 'JsonReader'
+
+    def __init__(self, fn: StringObject) -> None:
+        super().__init__()
+
+        self.fn = fn.value
+        self.fp = open(self.fn, 'r')
+
+        for key, value in load(self.fp).items():
+            self[key] = infer_type(value)
+
+        self.fp.close()
+
+
+# TODO: implement window keybindings
+window_keybindings = {
+    'q': 'q',
+    'w': 'w',
+    'e': 'e',
+    'r': 'r',
+    't': 't',
+    'y': 'y',
+    'u': 'u',
+    'i': 'i',
+    'o': 'o',
+    'p': 'p',
+    '[': '[',
+    ']': ']',
+    'a': 'a',
+    's': 's',
+    'd': 'd',
+    'f': 'f',
+    'g': 'g',
+    'h': 'h',
+    'j': 'j',
+    'k': 'k',
+    'l': 'l',
+    ';': ';',
+    "'": "'",
+    ',': ',',
+    '`': '`',
+    '\\': '\\',
+    'z': 'z',
+    'x': 'x',
+    'c': 'c',
+    'v': 'v',
+    'b': 'b',
+    'n': 'n',
+    'm': 'm',
+    '<': '<',
+    '>': '>',
+    '?': '?',
+    '!': '!',
+    '@': '@',
+    '#': '#',
+    '$': '$',
+    '%': '%',
+    '^': '^',
+    '&': '&',
+    '*': '*',
+    '(': '(',
+    ')': ')',
+    '{': '{',
+    '}': '}',
+    '|': '|',
+    '~': '~',
+    '+': '+',
+    '-': '-',
+    '=': '=',
+    '_': '_',
+    '.': '.',
+    'Enter': '<Enter>'
+}
+
+class Window:
+    __name__ = 'Window'
+
+    def __init__(self, title: str, width: int, height: int):
+        self.title = VarObject('title', StringObject(title))
+        self.width = VarObject('width', IntObject(width))
+        self.height = VarObject('height', IntObject(height))
+
+        self.__window = CTk()
+        self.__window.geometry(f'{width}x{height}')
+        self.__window.title(title)
+
+        self.__window.mainloop()
+
+    def SetTitle(self, args: tuple[Any, ...], _) -> NilObject:
+        new = get_arg(0, args)
+        if is_instance_type(new, StringObject):
+            self.__window.title(new.value)
+
+            return NilObject()
+
+    def Width(self, _: tuple[Any, ...], v) -> IntObject:
+        return IntObject(self.__window.winfo_width())
+
+    def Height(self, _: tuple[Any, ...], v) -> IntObject:
+        return IntObject(self.__window.winfo_height())
+
+    def Destroy(self, _: tuple[Any, ...], v) -> NilObject:
+        self.__window.destroy()
+        return NilObject()
+
+    def SetFullscreen(self, args: tuple[Any, ...], _) -> NilObject:
+        fullscreen = get_arg(0, args)
+        if is_instance_type(fullscreen, BoolObject):
+            self.__window.attributes('-fullscreen', fullscreen.value)
+            return NilObject()
+
+    def SetWindowSize(self, args: tuple[Any, ...], _) -> NilObject:
+        width = get_arg(0, args)
+        height = get_arg(1, args)
+        if is_instance_type(width, IntObject) and is_instance_type(height, IntObject):
+            self.__window.geometry(f'{width}x{height}')
+
+            return NilObject()
+
+    def BindKey(self, args: tuple[Any, ...], _) -> NilObject:
+        # TODO: finish this function
+        raise NotImplemented('This function is not implemented')
 
 
 Operators = {
@@ -203,6 +336,14 @@ class Libs:
                     return report_error('Knock', f'Missing Schema, try https://{url.value}')
 
 
+    class Json:
+        @staticmethod
+        def Parse(args: tuple[Any, ...], _):
+            fn = get_arg(0, args)
+            if is_instance_type(fn, StringObject):
+                return generate_cls(JsonReader(fn))
+
+
     class SplikX:
         @staticmethod
         def NewLexer(args: tuple[Any, ...], _):
@@ -222,7 +363,8 @@ class Libs:
         def OpenFile(args: tuple[Any, ...], _):
             fn = get_arg(0, args)
             if is_instance_type(fn, StringObject):
-                return generate_cls(FileReader(fn))
+                return generate_cls(File(fn))
+
 
     class Time:
         @staticmethod
@@ -231,7 +373,7 @@ class Libs:
 
             func = get_arg(0, args)
             if is_instance_type(func, FuncObject):
-                func.call(get_arg(1, args, optional=True), visitor)
+                func.call((), visitor)
 
             end = perf_counter()
             elapsed = end - start
@@ -242,6 +384,15 @@ class Libs:
             return generate_cls(Timer(perf_counter()))
 
         @staticmethod
+        def Since(args: tuple[Any, ...], _) -> FloatObject:
+            start = get_arg(0, args)
+            if is_instance_type(start, ClassObject):
+                if isinstance(start.class_type, Timer):
+                    return FloatObject(perf_counter() - start.attributes['time'].value.value)
+                else:
+                    return report_error('Type', f'Invalid class, expected Class \'Timer\'')
+
+        @staticmethod
         def Pause(args: tuple[Any, ...], _) -> NilObject:
             secs = get_arg(0, args)
             if is_instance_type(secs, (FloatObject, IntObject)):
@@ -249,13 +400,39 @@ class Libs:
 
                 return NilObject()
 
+
+    class AdvancedCls:
+        @staticmethod
+        def New(args: tuple[Any, ...], _) -> ClassObject:
+            name = get_arg(0, args)
+            cls = ClassObject(name.value, {}, {})
+
+            for arg in args:
+                if isinstance(arg, StringObject):
+                    cls.attributes[arg.value] = NilObject()
+                else:
+                    return report_error('Type', f'Invalid argument, expected type \'string\'')
+
+            return cls
+
+
     class GUI:
-        ...
+        @staticmethod
+        def NewWindow(args: tuple[Any, ...], _) -> ClassObject:
+            title = get_arg(0, args)
+            width = get_arg(1, args)
+            height = get_arg(2, args)
+
+            if is_instance_type(
+                title, StringObject) and is_instance_type(width, IntObject) and is_instance_type(height, IntObject):
+                return generate_cls(Window(title.value, width.value, height.value))
+
 
     class ArgumentParser:
         @staticmethod
         def NewArgumentParser(_: tuple[Any, ...], v):
             return generate_cls(ArgumentParser())
+
 
     class Operators:
         @staticmethod
@@ -273,7 +450,11 @@ class Libs:
 
                 return eval('{}{}{}'.format(obj1, Operators[operation.value], obj2))
 
+
     class System:
+        ScreenWidth = VarObject('ScreenWidth', IntObject(size()[0]))
+        ScreenHeight = VarObject('ScreenHeight', IntObject(size()[1]))
+
         @staticmethod
         def GetCD(_: tuple[Any, ...], v) -> StringObject:
             return StringObject(getcwd())
@@ -285,9 +466,82 @@ class Libs:
                 return StringObject(getenv(name.value))
 
         @staticmethod
-        def CPUCount(_: tuple[Any, ...], v) -> IntObject | NilObject:
+        def CPUCount(_: tuple[Any, ...], v) -> Union[IntObject, NilObject]:
             c = cpu_count()
             if c is None:
                 return NilObject()
 
             return IntObject(c)
+
+        @staticmethod
+        def Click(args: tuple[Any, ...], _) -> NilObject:
+            x = get_arg(0, args)
+            y = get_arg(1, args)
+            if is_instance_type(x, IntObject) and is_instance_type(y, IntObject):
+                click(x.value, y.value)
+
+                return NilObject()
+
+        @staticmethod
+        def LeftClick(args: tuple[Any, ...], _) -> NilObject:
+            x = get_arg(0, args)
+            y = get_arg(1, args)
+            if is_instance_type(x, IntObject) and is_instance_type(y, IntObject):
+                leftClick(x.value, y.value)
+
+                return NilObject()
+
+        @staticmethod
+        def RightClick(args: tuple[Any, ...], _) -> NilObject:
+            x = get_arg(0, args)
+            y = get_arg(1, args)
+            if is_instance_type(x, IntObject) and is_instance_type(y, IntObject):
+                rightClick(x.value, y.value)
+
+                return NilObject()
+
+        @staticmethod
+        def KeyUp(args: tuple[Any, ...], _) -> NilObject:
+            key = get_arg(0, args)
+            if is_instance_type(key, StringObject):
+                keyUp(key.value)
+
+                return NilObject()
+
+        @staticmethod
+        def KeyDown(args: tuple[Any, ...], _) -> NilObject:
+            key = get_arg(0, args)
+            if is_instance_type(key, StringObject):
+                keyDown(key.value)
+
+                return NilObject()
+
+        @staticmethod
+        def MouseDown(args: tuple[Any, ...], _) -> NilObject:
+            x = get_arg(0, args)
+            y = get_arg(1, args)
+            if is_instance_type(x, IntObject) and is_instance_type(y, IntObject):
+                mouseDown(x.value, y.value)
+
+                return NilObject()
+
+        @staticmethod
+        def MouseUp(args: tuple[Any, ...], _) -> NilObject:
+            x = get_arg(0, args)
+            y = get_arg(1, args)
+            if is_instance_type(x, IntObject) and is_instance_type(y, IntObject):
+                mouseUp(x.value, y.value)
+
+                return NilObject()
+
+        @staticmethod
+        def MouseInfo(_: tuple[Any, ...], v) -> NilObject:
+            mouseInfo()
+
+            return NilObject()
+
+        @staticmethod
+        def PrintMouseInfo(_: tuple[Any, ...], v) -> NilObject:
+            displayMousePosition()
+
+            return NilObject()

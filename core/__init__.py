@@ -63,9 +63,20 @@ class Visitor(SplikitVisitor):
     def visitImportStatement(self, ctx:SplikitParser.ImportStatementContext):
         as_cls = True if len(ctx.StringLiteral()) == 1 else False
 
+        # string = ctx.StringLiteral()[-1].getText()[1:-1] if len(ctx.StringLiteral()) > 1 else ctx.StringLiteral(0).getText()[1:-1]
+        #
+        # name = string
+        # is_from = ctx.StringLiteral()[-1].getText()[1:-1] if len(ctx.StringLiteral()) > 1 else None
+        #
+        # module = ModuleObject(name, is_from, {}, {})
+        # module.__import__(self.env, as_cls, [ctx.StringLiteral()])
+
         if as_cls:
             name = ctx.StringLiteral(0).getText()[1:-1]
-            lib = getattr(Libs, name)()
+            try:
+                lib = getattr(Libs, name)()
+            except AttributeError:
+                return report_error('Name', f'Library \'{name}\' was not found')
 
             methods = {}
             for method in [method for method in dir(lib) if
@@ -129,28 +140,33 @@ class Visitor(SplikitVisitor):
         self.env.add_cls(ClassObject(name, attributes, methods))
 
     def visitGetAttr(self, ctx:SplikitParser.GetAttrContext):
-        obj = self.visit(ctx.primaryExpression())
-        attr = ctx.Identifier().getText()
-        args = ()
-        if ctx.argumentList() is not None:
-            args = tuple([self.visit(arg) for arg in ctx.argumentList().expression()])
+        primary = self.visit(ctx.primaryExpression())
 
-        if isinstance(obj, ClassObject):
-            if attr in obj.methods:
-                return obj.methods[attr].call(args, self)
-            elif attr in obj.attributes:
-                return obj.attributes[attr].value
-            else:
-                return report_error('Type', f'Unknown attribute \'{attr}\'')
-        elif isinstance(obj, ModuleObject):
-            if attr in obj.methods:
-                return obj.methods[attr].call(args, self)
-            elif attr in obj.attributes:
-                return obj.attributes[attr].value
-            else:
-                return report_error('Type', f'Unknown attribute \'{attr}\'')
+        i = 0
+        for ident in [ident.getText() for ident in ctx.Identifier()]:
+            args = ()
+            if ctx.argumentList(i) is not None:
+                args = tuple([self.visit(arg) for arg in ctx.argumentList(i).expression()])
 
-        return getattr(obj, attr)(args)
+            if isinstance(primary, ClassObject):
+                if ident in primary.methods:
+                    return primary.methods[ident].call(args, self)
+                elif ident in primary.attributes:
+                    return primary.attributes[ident].value
+                else:
+                    return report_error('Type', f'Unknown attribute \'{ident}\'')
+            elif isinstance(primary, ModuleObject):
+                if ident in primary.methods:
+                    return primary.methods[ident].call(args, self)
+                elif ident in primary.attributes:
+                    return primary.attributes[ident].value
+                else:
+                    return report_error('Type', f'Unknown attribute \'{ident}\'')
+
+            primary = getattr(primary, ident)(args, self)
+            i += 1
+
+        return primary
 
     # def visitCastObject(self, ctx:SplikitParser.CastObjectContext):
     #     expr = self.visit(ctx.primaryExpression())
@@ -162,7 +178,9 @@ class Visitor(SplikitVisitor):
     #         return report_error('Type', f'Invalid cast type \'{expr.type}\' to \'{typ}\'')
 
     def visitExpression(self, ctx:SplikitParser.ExpressionContext):
-        if ctx.operator() is not None:
+        if ctx.getAttr() is not None:
+            return self.visit(ctx.getAttr())
+        elif ctx.operator() is not None:
             if ctx.primaryExpression() is None:
                 return
 
@@ -194,8 +212,6 @@ class Visitor(SplikitVisitor):
                                     f'Invalid type \'{self.visit(ctx.primaryExpression()).type}\' for operator \'!\'')
         elif ctx.primaryExpression() is not None:
             return self.visit(ctx.primaryExpression())
-        elif ctx.getAttr() is not None:
-            return self.visit(ctx.getAttr())
         # elif ctx.castObject() is not None:
         #     return self.visit(ctx.castObject())
 
@@ -217,7 +233,8 @@ class Visitor(SplikitVisitor):
         elif ctx.StringLiteral() is not None:
             return StringObject(ctx.StringLiteral().getText()[1:-1])
         elif ctx.BooleanLiteral() is not None:
-            return BoolObject(bool(ctx.BooleanLiteral().getText().title()))
+            txt = ctx.BooleanLiteral().getText()
+            return BoolObject(True if txt == 'true' else False)
         elif ctx.argumentList() is not None:
             return ArrayObject([self.visit(arg) for arg in ctx.argumentList().expression()])
         elif ctx.NilLiteral() is not None:
