@@ -1,15 +1,17 @@
-from typing import Any, NoReturn
-from . import get_arg
-from ..objects import *
 from . import report_argument_type_error, is_instance_type
+from typing import Any, NoReturn
+from ..error import report_error
+from ..objects import *
+from sys import stdout
+from . import get_arg
 
 class Funcs:
     @staticmethod
-    def Print_func(args: tuple[Any, ...], _) -> NilObject: # visitor is _
+    def Print_func(args: tuple[Any, ...], _) -> NilObject:
         if hasattr(get_arg(0, args), 'repr'):
-            print(get_arg(0, args).repr())
+            stdout.write(str(get_arg(0, args).repr()) + '\n')
         else:
-            print(get_arg(0, args))
+            stdout.write(str(get_arg(0, args)) + '\n')
 
         return NilObject()
 
@@ -34,19 +36,21 @@ class Funcs:
             [obj for obj in visitor.env.classes.values()] + \
             [obj for obj in visitor.env.modules.values()])
 
-    @staticmethod
-    def Call_func(args: tuple[Any, ...], visitor) -> Any:
-        func = get_arg(0, args)
-        a = get_arg(1, args, optional=True)
-        if a is None:
-            if is_instance_type(func, FuncObject):
-                return func.call((), visitor)
-        else:
-            if is_instance_type(func, FuncObject):
-                try:
-                    return func.call(a.value, visitor)
-                except TypeError:
-                    return func.call(a.value)
+    # @staticmethod
+    # def Call_func(args: tuple[Any, ...], visitor) -> Any:
+    #     func = get_arg(0, args)
+    #     a = get_arg(1, args, optional=True)
+    #
+    #     if not isinstance(func, FuncObject) or not callable(func.py):
+    #         return report_error('Type', f'\'{func}\' is not callable')
+    #
+    #     if a is None:
+    #         return func.call((), visitor)
+    #     else:
+    #         try:
+    #             return func.call(a.value, visitor)
+    #         except TypeError:
+    #             return func.call(a.value)
 
     # @staticmethod
     # def Splik_func(args: tuple[Any, ...], _):

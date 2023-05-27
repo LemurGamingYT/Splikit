@@ -24,19 +24,18 @@ class ArrayObject:
     __type__: str = field(init=False, repr=False, default='array')
 
     def repr(self) -> str:
-        print(self.value)
         return f'{{{", ".join(val.repr() for val in self.value)}}}'
 
     @property
     def type(self) -> str:
         return 'array'
 
-    def TimSort(self, _: tuple[Any, ...]):
+    def TimSort(self, _: tuple[Any, ...], v):
         new = self.value
         new.sort()
         return ArrayObject(new)
 
-    def QuickSort(self, _: tuple[Any, ...]):
+    def QuickSort(self, _: tuple[Any, ...], v):
         return ArrayObject(list(quicksort(self.value)))
 
     def __add__(self, other: Any) -> Any:

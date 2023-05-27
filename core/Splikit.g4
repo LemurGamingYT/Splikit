@@ -15,9 +15,8 @@ statement: variableDeclaration
 variableDeclaration: Identifier '=' expression;
 
 functionDeclaration
-    : 'func' Identifier '(' parameterList? ')' '{' statement* '}'
+    : 'func' Identifier ('::' Identifier)? '(' parameterList? ')' '{' statement* '}'
     | Identifier '(' parameterList? ')' '=>' '{' statement* '}'
-    | 'func' Identifier '::' Identifier '(' parameterList? ')' '{' statement* '}'
     ;
 
 enumDeclaration: 'enum' Identifier '{' variableDeclaration* '}';
@@ -25,9 +24,9 @@ enumDeclaration: 'enum' Identifier '{' variableDeclaration* '}';
 clsFuncDeclaration: 'func' Identifier '(' parameterList? ')' '{' statement* '}';
 
 classDeclarations
-    : clsFuncDeclaration*
-    | variableDeclaration*
+    : (clsFuncDeclaration | variableDeclaration)*
     ;
+
 classDeclaration: 'class' Identifier '{' classDeclarations '}';
 
 functionCall: Identifier '(' argumentList? ')';
@@ -41,7 +40,11 @@ parameterList: Identifier (',' Identifier)*;
 argumentList: expression (',' expression)*;
 
 getAttr: primaryExpression ('.' Identifier ('(' argumentList? ')')?)+;
-expression: primaryExpression (operator expression)* | '!' primaryExpression | getAttr;
+expression
+    : primaryExpression (operator expression)*
+    | '!' primaryExpression
+    | getAttr
+    ;
 
 primaryExpression: '(' expression ')' | functionCall | atomExpression;
 

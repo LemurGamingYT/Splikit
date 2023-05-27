@@ -1,9 +1,4 @@
-arr = {true, false, false}
-
-test() => {
-    Print(arr)
-}
+arr = {100, 25, 50, 100}
 
 Print(Len(arr))
 Print(Type(80.2))
-Print(Call(test))

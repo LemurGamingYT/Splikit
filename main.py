@@ -13,6 +13,7 @@ from core.env import Environment
 from time import perf_counter
 # from typing import Callable
 from os.path import isdir
+from cProfile import run
 from core import Visitor
 from os import listdir
 from sys import argv

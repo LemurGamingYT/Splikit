@@ -1,26 +1,28 @@
+from json import load
+from os import getcwd, cpu_count, getenv
+from re import error, sub, compile
+from sys import argv
+from time import perf_counter, sleep
 from typing import Any, Union
-from customtkinter import CTk, CTkButton, CTkLabel, CTkFrame
+
+from customtkinter import CTk
 from pyautogui import (
     click, leftClick, rightClick, keyDown, keyUp, mouseUp, mouseInfo, mouseDown, displayMousePosition, size)
-from . import is_instance_type, get_arg, infer_type
-from .classes import generate_cls
-from ..objects import *
-from os import getcwd, cpu_count, getenv
-from time import perf_counter, sleep
-from ..error import report_error
 from requests import get, Response
 from requests.exceptions import MissingSchema
+
+from . import is_instance_type, get_arg, infer_type
 from .classes import DictionaryObject
-from re import findall, error, sub, compile, match
-from json import load
-from sys import argv
+from .classes import generate_cls
+from ..error import report_error
+from ..objects import *
 
 
 class Timer:
     __name__ = 'Timer'
 
     def __init__(self, time: float):
-        self.time = VarObject('time', FloatObject(time))
+        self.time = FloatObject(time)
 
 
 class WebResponse:
@@ -28,13 +30,13 @@ class WebResponse:
 
     def __init__(self, response: Response):
         self.__response = response
-        self.content = VarObject('content', StringObject(response.text))
-        self.status = VarObject('status', IntObject(response.status_code))
-        self.requestedUrl = VarObject('requestedUrl', StringObject(response.url))
-        self.encoding = VarObject('encoding', StringObject(response.encoding))
-        self.ok = VarObject('ok', BoolObject(response.ok))
-        self.elapsed = VarObject('elapsed', FloatObject(response.elapsed.total_seconds()))
-        self.history = VarObject('history', ArrayObject(response.history))
+        self.content = StringObject(response.text)
+        self.status = IntObject(response.status_code)
+        self.requestedUrl = StringObject(response.url)
+        self.encoding = StringObject(response.encoding)
+        self.ok = BoolObject(response.ok)
+        self.elapsed = FloatObject(response.elapsed.total_seconds())
+        self.history = ArrayObject(response.history)
 
     def Close(self, _: tuple[Any, ...], v) -> NilObject:
         self.__response.close()
@@ -47,10 +49,10 @@ class File:
     def __init__(self, fn: StringObject):
         self.__writeable_file = open(fn.value, 'w')
         self.__readable_file = open(fn.value, 'r')
-        self.name = VarObject('name', StringObject(self.__readable_file.name))
-        self.contents = VarObject('contents', StringObject(self.__readable_file.read()))
-        self.encoding = VarObject('encoding', StringObject(self.__readable_file.encoding))
-        self.closed = VarObject('closed', BoolObject(self.__readable_file.closed))
+        self.name = StringObject(self.__readable_file.name)
+        self.contents = StringObject(self.__readable_file.read())
+        self.encoding = StringObject(self.__readable_file.encoding)
+        self.closed = BoolObject(self.__readable_file.closed)
 
     def Write(self, args: tuple[Any, ...], v) -> NilObject:
         content = get_arg(0, args)
@@ -452,8 +454,8 @@ class Libs:
 
 
     class System:
-        ScreenWidth = VarObject('ScreenWidth', IntObject(size()[0]))
-        ScreenHeight = VarObject('ScreenHeight', IntObject(size()[1]))
+        ScreenWidth = IntObject(size()[0])
+        ScreenHeight = IntObject(size()[1])
 
         @staticmethod
         def GetCD(_: tuple[Any, ...], v) -> StringObject:

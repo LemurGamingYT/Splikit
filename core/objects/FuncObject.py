@@ -17,7 +17,7 @@ class FuncObject:
         return 'func'
 
     def repr(self) -> str:
-        return f'Function \'{self.name}\' at {hex(id(self))}'
+        return f'Function \'{self.name}\''
 
     def __add_params(self, args: tuple[Any, ...], visitor) -> None:
         env = visitor.env

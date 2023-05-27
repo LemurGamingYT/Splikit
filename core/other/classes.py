@@ -91,7 +91,7 @@ class DictionaryObject:
 
 class Classes:
     class Math:
-        PI = VarObject('PI', FloatObject(pi))
+        PI = FloatObject(pi)
 
         @staticmethod
         def Min(args: tuple[Any, ...], _):
