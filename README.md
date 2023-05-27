@@ -13,6 +13,11 @@ If you want to try the language without downloading then you can use [This link]
 
 **Modules**
 
+- Json - A JSON library support
+- System - Like os and sys combined (from Python)
+- Obfuscator - Obfuscator for Splikit
+- AdvancedCls - A library for creating advanced classes (Like dataclasses from Python)
+
 ---
 
 **Built-in classes**
