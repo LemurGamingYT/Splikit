@@ -1,2 +1,2 @@
 @echo off
-python main.py %1
+.\Splikit.exe %1

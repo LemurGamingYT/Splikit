@@ -1,0 +1,125 @@
+{
+ "version": "auto-py-to-exe-configuration_v1",
+ "pyinstallerOptions": [
+  {
+   "optionDest": "noconfirm",
+   "value": true
+  },
+  {
+   "optionDest": "filenames",
+   "value": "C:/Users/alex/Desktop/Programming/Python/Splikit/main.py"
+  },
+  {
+   "optionDest": "onefile",
+   "value": true
+  },
+  {
+   "optionDest": "console",
+   "value": true
+  },
+  {
+   "optionDest": "name",
+   "value": "Splikit"
+  },
+  {
+   "optionDest": "upx_dir",
+   "value": "C:/Users/alex/Downloads/upx-4.0.2-win64"
+  },
+  {
+   "optionDest": "ascii",
+   "value": false
+  },
+  {
+   "optionDest": "clean_build",
+   "value": true
+  },
+  {
+   "optionDest": "strip",
+   "value": false
+  },
+  {
+   "optionDest": "noupx",
+   "value": false
+  },
+  {
+   "optionDest": "disable_windowed_traceback",
+   "value": false
+  },
+  {
+   "optionDest": "embed_manifest",
+   "value": true
+  },
+  {
+   "optionDest": "uac_admin",
+   "value": false
+  },
+  {
+   "optionDest": "uac_uiaccess",
+   "value": false
+  },
+  {
+   "optionDest": "win_private_assemblies",
+   "value": false
+  },
+  {
+   "optionDest": "win_no_prefer_redirects",
+   "value": false
+  },
+  {
+   "optionDest": "bootloader_ignore_signals",
+   "value": false
+  },
+  {
+   "optionDest": "argv_emulation",
+   "value": false
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/alex/Desktop/Programming/Python/Splikit/core;core/"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:/Users/alex/Desktop/Programming/Python/Splikit/examples;examples/"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "numpy"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "pygame"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "Pillow"
+  },
+  {
+   "optionDest": "datas",
+   "value": "C:\\Users\\alex\\AppData\\Local\\Programs\\Python\\Python311\\Lib\\site-packages\\customtkinter;customtkinter/"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "gevent"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "greenlet"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "pip"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "setuptools"
+  },
+  {
+   "optionDest": "excludes",
+   "value": "zope"
+  }
+ ],
+ "nonPyinstallerOptions": {
+  "increaseRecursionLimit": true,
+  "manualArguments": ""
+ }
+}

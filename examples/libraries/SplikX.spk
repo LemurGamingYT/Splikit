@@ -1,12 +1,8 @@
 import "SplikX"
 
-lexer = SplikX.NewLexer('Print()')
-
-lexer.Skip('\s+')
+lexer = SplikX.NewLexer('1++')
 lexer.AddRule('[0-9]+', 'INTEGER')
-lexer.AddRule('[a-zA-Z_][a-zA-Z_0-9]*', 'IDENTIFIER')
-lexer.AddRule('\(', 'LPAREN')
-lexer.AddRule('\)', 'RPAREN')
+lexer.AddRule('\+', 'PLUS')
 
 tokens = lexer.Tokenize()
 

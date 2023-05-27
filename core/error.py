@@ -1,13 +1,10 @@
+from antlr4.error.ErrorListener import ErrorListener
+from traceback import print_stack
 from typing import NoReturn
 from inspect import stack
-from traceback import print_stack
-from antlr4.error.ErrorListener import ErrorListener
+from sys import exit
 
 debug = False
-
-class SplikitErrorListener(ErrorListener):
-    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
-        report_error('Syntax', f'Invalid syntax \'{offendingSymbol.text}\' at ln {line}, col {column}')
 
 def report_error(typ: str, msg: str) -> NoReturn:
     if debug:
@@ -15,3 +12,7 @@ def report_error(typ: str, msg: str) -> NoReturn:
 
     print(f'{typ}Error: {msg}')
     exit(0)
+
+class SplikitErrorListener(ErrorListener):
+    def syntaxError(self, recognizer, offendingSymbol, line, column, msg, e):
+        report_error('Syntax', f'Invalid syntax \'{offendingSymbol.text}\' at ln {line}, col {column}')

@@ -1,9 +1,10 @@
-from . import report_argument_type_error, is_instance_type
-from typing import Any, NoReturn
-from ..error import report_error
-from ..objects import *
 from sys import stdout
+from typing import Any, NoReturn
+
 from . import get_arg
+from . import report_argument_type_error, is_instance_type
+from ..objects import *
+
 
 class Funcs:
     @staticmethod

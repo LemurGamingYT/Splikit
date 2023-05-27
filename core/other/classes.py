@@ -291,6 +291,16 @@ class Classes:
 
             return StringObject(getattr(obj, attr.value))
 
+        @staticmethod
+        def SetAttr(args: tuple[Any, ...], _):
+            obj = get_arg(0, args)
+            attr = get_arg(1, args)
+            val = get_arg(2, args)
+
+            setattr(obj, attr.value, val)
+
+            return NilObject()
+
 
     class Thread:
         @staticmethod
