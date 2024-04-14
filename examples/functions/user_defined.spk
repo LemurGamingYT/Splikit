@@ -1,0 +1,18 @@
+func test(int x) -> int {
+    return x + 200
+}
+
+func test2(float x, float y) -> float {
+    return (x + y) - 1.0
+}
+
+func test3() {
+    print("Hello world!")
+}
+
+func main() -> int {
+    print(test(500))
+    print(test2(1.2, 0.9))
+    test3()
+    return 0
+}

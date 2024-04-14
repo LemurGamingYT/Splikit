@@ -14,8 +14,8 @@ elseifStmt: ELSE IF expr body;
 elseStmt: ELSE body;
 whileStmt: WHILE expr body;
 
-funcAssign: FUNC ID LPAREN params? RPAREN (RETURNS type) body;
-varAssign: type? ID ASSIGN expr;
+funcAssign: INLINE? FUNC ID LPAREN params? RPAREN (RETURNS type)? body;
+varAssign: CONST? type? ID ASSIGN expr;
 
 arg: expr;
 args: arg (COMMA arg)*;
@@ -41,12 +41,15 @@ expr
 IF: 'if';
 ELSE: 'else';
 FUNC: 'func';
+CONST: 'const';
 WHILE: 'while';
+INLINE: 'inline';
 RETURN: 'return';
 
 INT: '-'? [0-9]+;
 FLOAT: '-'? [0-9]* '.' [0-9]+;
-STRING: '"' .*? '"';
+APOSTROPHE: '\'';
+STRING: '"' .*? '"' | APOSTROPHE .*? APOSTROPHE;
 BOOL: 'true' | 'false';
 NIL: 'nil';
 ID: [a-zA-Z_][a-zA-Z_0-9]*;

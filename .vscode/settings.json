@@ -1,6 +1,8 @@
 {
     "files.associations": {
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "chrono": "cpp",
+        "filesystem": "cpp"
     },
     "workbench.colorCustomizations": {
         "minimap.background": "#00000000",

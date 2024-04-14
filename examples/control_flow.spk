@@ -1,0 +1,17 @@
+func main() -> int {
+    x = false
+    if !x {
+        print("Not x is true")
+    } else {
+        print("Whoops! We need x to be false")
+    }
+
+    lift = true
+    if !lift {
+        print("We are still preparing")
+    } else if lift {
+        print("We have lift off!")
+    }
+
+    return 0
+}

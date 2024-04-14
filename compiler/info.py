@@ -37,9 +37,9 @@ def get_info(header: Path = DEFAULT_HEADER, debug: bool = False) -> dict:
                 op_name_to_symbol_map.get(func[2], func[2]),
                 tuple(param.split()[0] for param in func[3].split(', ') if param != '')
             )] = func
-    
+
     for struct in TYPE_REGEX.findall(src):
-        info[struct.removesuffix('Type')] = struct
+        info[struct.removesuffix('Type')] = struct.removesuffix('Type')
 
     if debug:
         pprint(info)

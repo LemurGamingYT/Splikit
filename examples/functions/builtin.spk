@@ -1,0 +1,8 @@
+func main() -> int {
+    print("Hello world!")
+    print(type(100.5))
+    print(type(8))
+    print(type(to_string(126)))
+
+    return 0
+}

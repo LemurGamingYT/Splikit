@@ -11,6 +11,11 @@
 #define VERSION "0.0.1"
 
 #define PI 3.14159265358979323846
+#define ONE_BILLION 1000000000
+#define ONE_MILLION 1000000
+#define ONE_THOUSAND 1000
+#define MAX_INT 2147483647
+#define MIN_INT -2147483648
 
 
 #if defined(_WIN32) || defined(_WIN64)
@@ -43,6 +48,9 @@ struct SystemType{};
 struct SplikitType{};
 #define Splikit SplikitType{}
 
+// struct IntegerType{};
+// #define Integer IntegerType{}
+
 
 inline string type(int _) { return "int"; }
 inline string type(float _) { return "float"; }
@@ -52,6 +60,7 @@ inline string type(nil _) { return "nil"; }
 inline string type(MathType _) { return "Math"; }
 inline string type(SystemType _) { return "System"; }
 inline string type(SplikitType _) { return "Splikit"; }
+// inline string type(IntegerType _) { return "IntegerClass"; }
 
 inline string repr(int x) { return std::to_string(x); }
 inline string repr(float x) { return std::to_string(x); }
@@ -61,6 +70,7 @@ inline string repr(nil x) { return "nil"; }
 inline string repr(MathType x) { return "class 'Math'"; }
 inline string repr(SystemType x) { return "class 'System'"; }
 inline string repr(SplikitType x) { return "class 'Splikit'"; }
+// inline string repr(IntegerType x) { return "class 'Integer'"; }
 
 inline bool to_bool(int x) { return x > 0; }
 inline bool to_bool(float x) { return x > 0; }
@@ -70,6 +80,7 @@ inline bool to_bool(nil x) { return false; }
 inline bool to_bool(MathType x) { return false; }
 inline bool to_bool(SystemType x) { return false; }
 inline bool to_bool(SplikitType x) { return false; }
+// inline bool to_bool(IntegerType x) { return false; }
 
 inline int add(int x, int y) { return x + y; }
 inline float add(float x, float y) { return x + y; }
@@ -124,6 +135,19 @@ string not_(string x) {
 nil print(string x) {
     std::cout << x << '\n';
     return nullptr;
+}
+
+string input(string prompt) {
+    string res;
+    std::cout << prompt;
+    std::getline(std::cin, res);
+    return res;
+}
+
+string input() {
+    string res;
+    std::getline(std::cin, res);
+    return res;
 }
 
 // property
@@ -230,11 +254,11 @@ inline string System_platform() {
 #endif
 }
 // property static
-inline string System_pid() {
+inline int System_pid() {
 #ifdef OS_WINDOWS
-    return std::to_string(GetCurrentProcessId());
+    return (int)GetCurrentProcessId();
 #elif defined(OS_UNIX)
-    return std::to_string(getpid());
+    return getpid();
 #else
     return -1;
 #endif

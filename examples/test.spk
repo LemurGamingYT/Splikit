@@ -1,3 +1,4 @@
 func main() -> int {
+    print("Splikit version: v" + Splikit.version)
     return 0
 }

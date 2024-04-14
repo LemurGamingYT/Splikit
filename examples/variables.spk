@@ -1,0 +1,7 @@
+func main() -> int {
+    x = 10
+    int y = 100
+    const z = 1000
+    z = 10000
+    return 0
+}
