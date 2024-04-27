@@ -1,0 +1,25 @@
+func conjecture(int num) -> int {
+    steps = 0
+    x = num
+    while x > 1 {
+        if x % 2 == 0 {
+            x /= 2
+        } else {
+            x = (x * 3) + 1 // 3n + 1
+        }
+
+        steps++
+    }
+
+    return steps
+}
+
+func main() -> int {
+    i = 0
+    while i < 10 {
+        print("Collatz conjecture for " + to_string(i) + ": " + to_string(conjecture(i)))
+        i++
+    }
+
+    return 0
+}

@@ -1,0 +1,6 @@
+func main() -> int {
+    first_number = input("First number> ").parse_int()
+    second_number = input("Second number> ").parse_int()
+    print(first_number + second_number)
+    return 0
+}

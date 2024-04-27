@@ -1,0 +1,15 @@
+func main() -> int {
+    arr = int{88, 902, 23, 544, 61, 792, 1094, 955}
+    print(arr)
+    print(arr.first)
+    print(arr.last)
+    print(arr.length)
+    print(arr.at(2))
+    arr.add(167)
+    arr.reverse()
+    print(arr)
+    arr.sort()
+    print(arr)
+
+    return 0
+}

@@ -1,0 +1,46 @@
+func format_response(string outcome, string bot_choice, string user_choice) {
+    print(outcome + ": " + bot_choice + " vs " + user_choice)
+}
+
+func respond(string bot_choice, string user_choice) {
+    if bot_choice == "r" && user_choice == "r" {
+        format_response("Draw", bot_choice, user_choice)
+    } else if bot_choice == "r" && user_choice == "p" {
+        format_response("You win", bot_choice, user_choice)
+    } else if bot_choice == "r" && user_choice == "s" {
+        format_response("I win", bot_choice, user_choice)
+    } else if bot_choice == "p" && user_choice == "r" {
+        format_response("I win", bot_choice, user_choice)
+    } else if bot_choice == "p" && user_choice == "p" {
+        format_response("Draw", bot_choice, user_choice)
+    } else if bot_choice == "p" && user_choice == "s" {
+        format_response("You win", bot_choice, user_choice)
+    } else if bot_choice == "s" && user_choice == "r" {
+        format_response("You win", bot_choice, user_choice)
+    } else if bot_choice == "s" && user_choice == "p" {
+        format_response("I win", bot_choice, user_choice)
+    } else if bot_choice == "s" && user_choice == "s" {
+        format_response("Draw", bot_choice, user_choice)
+    }
+}
+
+func main() -> int {
+    while true {
+        user_choice = input("Your choice> ").lowered
+        if user_choice == "r" || user_choice == "p" || user_choice == "s" {
+            bot_choice_int = Math.random_int(1, 3)
+            bot_choice = ""
+            if bot_choice_int == 1 { bot_choice = "r" }
+            if bot_choice_int == 2 { bot_choice = "p" }
+            if bot_choice_int == 3 { bot_choice = "s" }
+
+            respond(bot_choice, user_choice)
+        } else if user_choice == "exit" {
+            exit()
+        } else {
+            print("Invalid user choice, expected r, p or s (rock, paper or scissors respectively)")
+        }
+    }
+
+    return 0
+}

@@ -2,7 +2,6 @@
 
 #include "../splikit.hpp"
 
-#include <sys/stat.h>
 #include <fstream>
 
 
@@ -12,32 +11,39 @@ struct FileType {
     string path;
 };
 
+#define File FileType
 
-inline string type(FileType _) { return "File"; }
 
-inline string repr(FileType f) { return "File(path=" + f.path + ")"; }
+inline string type(File& _) { return "File"; }
+
+inline string repr(File& f) { return "File(path='" + f.path + "')"; }
 
 // function
-FileType open_file(string path) {
-    FileType f;
-    f.f.open(path);
-    f.p = std::filesystem::path(path);
-    f.path = path;
-    return f;
+File open_file(string path) {
+    return {std::fstream(path), std::filesystem::path(path), path};
 }
 
 
 // property
-inline string File_path(FileType f) { return f.path; }
+inline string File_path(File& f) { return f.path; }
 
 // property
-inline bool File_exists(FileType& f) { return std::filesystem::exists(f.p); }
-
-inline bool to_bool(FileType f) { return File_exists(f); }
+inline bool File_is_file(File& f) { return std::filesystem::is_regular_file(f.p); }
 
 // property
-string File_content(FileType f) {
-    if (!File_exists(f)) return "";
+inline bool File_is_dir(File& f) { return std::filesystem::is_directory(f.p); }
+
+// property
+inline bool File_exists(File& f) { return std::filesystem::exists(f.p); }
+
+inline bool to_bool(File& f) { return File_exists(f); }
+
+inline bool not_(File& f) { return !to_bool(f); }
+
+// property
+string File_content(File& f) {
+    if (!File_exists(f)) throw splikit_error("File does not exist");
+    if (!File_is_file(f)) throw splikit_error("File is not a file");
 
     std::ifstream file(f.path);
     string out = string((std::istreambuf_iterator<char>(file)), std::istreambuf_iterator<char>());
@@ -46,38 +52,32 @@ string File_content(FileType f) {
 }
 
 // property
-inline bool File_is_file(FileType& f) { return std::filesystem::is_regular_file(f.p); }
-
-// property
-inline bool File_is_dir(FileType f) { return std::filesystem::is_directory(f.p); }
-
-// property
-int File_size(FileType f) {
-    if (!File_exists(f)) return -1;
-    if (!File_is_file(f)) return -1;
+int File_size(File& f) {
+    if (!File_exists(f)) throw splikit_error("File does not exist");
+    if (!File_is_file(f)) throw splikit_error("File is not a file");
     return std::filesystem::file_size(f.p);
 }
 
 // method
-inline nil File_close(FileType f) {
+inline nil File_close(File& f) {
     f.f.close();
     return nullptr;
 }
 
 // method
-nil File_write(FileType f, string s) {
-    if (!File_is_file(f)) { return nullptr; }
+nil File_write(File& f, string s) {
+    if (!File_is_file(f)) throw splikit_error("File is not a file");
 
     f.f << s;
     return nullptr;
 }
 
 // method
-nil File_create(FileType f) {
+nil File_create(File& f) {
     if (!File_exists(f)) {
         f.f.close();
         f.f.open(f.path, std::ios::out);
     }
 
-    return nullptr;
+    throw splikit_error("File already exists");
 }

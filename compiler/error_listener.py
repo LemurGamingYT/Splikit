@@ -13,7 +13,9 @@ class SplikitErrorListener(ErrorListener):
     
     def syntaxError(self, _, offendingSymbol, line, column, msg, _e):
         if self.src is not None:
-            print(self.src.splitlines()[line - 1])
+            if line - 1 >= 0 and line - 1 < len(self.src.splitlines()):
+                print(self.src.splitlines()[line - 1])
+
             print(' ' * column + '^')
 
         msg = f'Invalid syntax \'{offendingSymbol.text}\''

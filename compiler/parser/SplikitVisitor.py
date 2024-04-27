@@ -54,6 +54,11 @@ class SplikitVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by SplikitParser#useStmt.
+    def visitUseStmt(self, ctx:SplikitParser.UseStmtContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by SplikitParser#funcAssign.
     def visitFuncAssign(self, ctx:SplikitParser.FuncAssignContext):
         return self.visitChildren(ctx)

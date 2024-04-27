@@ -20,6 +20,8 @@
     - During the setup, add Python to PATH and install `pip` and run the command: `pip install -r requirements.txt` in the directory you have downloaded this repository.
 3. Install a C++ compiler
     - MinGW (g++): https://sourceforge.net/projects/mingw/files/latest/download
+    - LLVM (clang++): https://github.com/llvm/llvm-project/releases
+        - You can also download LLVM using Chocolatey: `choco install llvm`
 4. Run the compiler
     - Use the command: `python main.py [.spk file]` to compile a .spk file to C++ and run it.
 
@@ -27,7 +29,7 @@
 
 # Ideas
 
-- **C++ interoperability**: Splikit is compiled to C++ and therefore, it should be possible to interop with C++ libraries and functions. This could be done by converting C++ libraries into Splikit-compatible ones. *(Expect this to come **way** later because this could probably take years to properly implement)*
+- **C++ interoperability**: Splikit is compiled to C++ and therefore, it should be possible to interop with C++ libraries and functions. This could be done by converting C++ libraries into Splikit-compatible ones. *(Expect this to come **way** later because this could probably take months to properly implement)*
 ```
 // First, the compiler will compile the symbols in the header into a Splikit-compatible one.
 // Next, the compiler will #include the header in the generated C++ code from the .spk file.
@@ -106,7 +108,7 @@ vec_zero = Vector3.zero
 vec = Vector3{70, 0, 120}
 print(vec) // 'Vector3.repr' is called
 ```
-- Compile time expressions: Expressions or functions evaluated at compile time instead of run time. This could make use of C++'s constexpr keyword, however this would mean that the feature would be limited to ints and floats.
+- **Compile time expressions**: Expressions or functions evaluated at compile time instead of run time. This could make use of C++'s constexpr keyword, however this would mean that the feature would be limited to ints and floats.
 ```
 comptime {
     func factorial(int n) -> int {

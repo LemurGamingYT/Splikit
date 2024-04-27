@@ -1,0 +1,13 @@
+use "fstream"
+
+func main() -> int {
+    file = open_file("./fstream.txt")
+    if file { // a.k.a file.exists
+        print(file.content)
+    }
+
+    print(file)
+
+    file.close()
+    return 0
+}

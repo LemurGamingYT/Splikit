@@ -2,12 +2,15 @@ from typing import Callable, Union
 from functools import wraps
 from pathlib import Path
 
-from compiler.constants import EnvItem, Code, Position
+from compiler.constants import EnvItem, Code, Position, base_type
 
 
-std = Path(__file__).parent
+std = Path(__file__).parent.absolute()
 
 LIBS = {
+    'fstream': std / 'fstream.hpp',
+    'time': std / 'time.hpp',
+    'ui': std / 'ui.hpp'
 }
 
 
@@ -30,12 +33,15 @@ def verify_params(args: list, params: dict[str, dict], compiler, position: Posit
     for name, param in params.items():
         if arg_index < len_args:
             arg = args[arg_index]
-            if param.get('type') is not None and arg.type not in param['type'] and 'any' not in param['type']:
+            arg_type = base_type(arg.type)
+            typ = base_type(list(param.get('type', ['any'])))
+
+            if arg_type not in typ and 'any' not in typ:
                 arg.position.error_here(
-                    f'Expected {" or ".join(param['type'])} but got {arg.type}',
+                    f'Expected {" or ".join(typ)} but got {arg_type}',
                     compiler.src
                 )
-            env[name] = Code(arg.text, arg.type, position)
+            env[name] = Code(arg.text, arg_type, position)
             arg_index += 1
         elif not param.get('optional', False):
             position.error_here(f'Missing required argument: {name}', compiler.src)
@@ -102,9 +108,30 @@ def _input(_, env: dict, call_position: Position) -> Code:
         call_position
     )
 
+@std_func({'exit_code': {'type': {'int'}, 'optional': True}})
+def _exit(_, env: dict, call_position: Position) -> Code:
+    exit_code = env.get('exit_code')
+    return Code(
+        f'exit({exit_code.text if exit_code is not None else 0})',
+        'nil',
+        call_position
+    )
 
-def get_functions(compiler) -> None:
-    compiler.env['print'] = EnvItem('print', 'nil', _print)
-    compiler.env['type'] = EnvItem('type', 'string', _type)
-    compiler.env['to_string'] = EnvItem('to_string', 'string', _to_string)
-    compiler.env['input'] = EnvItem('input', 'string', _input)
+@std_func({'message': {'type': {'string'}}})
+def _error(_, env: dict, call_position: Position) -> Code:
+    message = env['message']
+    return Code(
+        f'throw splikit_error({message.text})',
+        'nil',
+        call_position
+    )
+
+
+def get_functions(env: dict) -> None:
+    env['print'] = EnvItem('print', 'nil', False, _print)
+    env['type'] = EnvItem('type', 'string', False, _type)
+    env['to_string'] = EnvItem('to_string', 'string', False, _to_string)
+    env['input'] = EnvItem('input', 'string', False, _input)
+    env['exit'] = EnvItem('exit', 'nil', False, _exit)
+    env['error'] = EnvItem('error', 'nil', False, _error)
+    env['range'] = EnvItem('range', 'array', False)

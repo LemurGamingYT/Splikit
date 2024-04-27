@@ -1,42 +1,35 @@
-from argparse import Namespace
+from platform import system
+from subprocess import run
 from typing import Union
 from pathlib import Path
+from shutil import which
 
 from antlr4 import FileStream, CommonTokenStream
 
-from compiler.std import std_func, verify_params, get_functions
-from compiler.info import get_info, op_name_to_symbol_map
+from compiler.info import (
+    get_info, op_name_to_symbol_map, DEFAULT_HEADER, is_function, is_type, is_method, is_property,
+    is_static
+)
+from compiler.constants import (
+    Code, EnvItem, Position, BOLD, RESET, RED, find_function, base_type, init_env
+)
+from compiler.basic_error_checker import BasicErrorChecker
 from compiler.parser.SplikitVisitor import SplikitVisitor
 from compiler.error_listener import SplikitErrorListener
 from compiler.parser.SplikitParser import SplikitParser
-from compiler.constants import Code, EnvItem, Position
+from compiler.std import std_func, verify_params, LIBS
 from compiler.parser.SplikitLexer import SplikitLexer
 
 
 class SplikitCompiler(SplikitVisitor):
-    def __init__(self, args: Namespace, parent_env: Union[dict, None] = None) -> None:
+    def __init__(self, parent_env: Union[dict, None] = None) -> None:
         self.src: Union[str, None] = None
         self.env = parent_env or {}
-        self.args = args
+        self.includes = set()
 
         self.info = get_info()
-        get_functions(self)
-        self.env.update({
-            k: EnvItem(k, k)
-            for k, v in self.info.items()
-            if k == v
-        })
 
-        self.env.update({
-            'ONE_BILLION': EnvItem('ONE_BILLION', 'int'),
-            'ONE_MILLION': EnvItem('ONE_MILLION', 'int'),
-            'ONE_THOUSAND': EnvItem('ONE_THOUSAND', 'int'),
-            'MAX_INT': EnvItem('MAX_INT', 'int'),
-            'MIN_INT': EnvItem('MIN_INT', 'int'),
-        })
-
-
-    def compile(self, file: Path) -> str:
+    def compile(self, file: Path) -> Path:
         self.src = file.read_text('utf-8')
         fstream = FileStream(file.as_posix())
 
@@ -48,12 +41,28 @@ class SplikitCompiler(SplikitVisitor):
         parser.addErrorListener(SplikitErrorListener(self.src))
 
         tree = parser.parse()
-        return self.visit(tree)
+        
+        init_env(self.env, self.info)
 
-    def find_function(self, name: str) -> Union[tuple, None]:
-        for func in self.info.values():
-            if isinstance(func, tuple) and func[2] == name:
-                return func
+        BasicErrorChecker(self.env.copy(), self.src).visit(tree)
+        cpp_code = self.visit(tree)
+        
+        cpp_file = file.with_suffix('.cpp').absolute()
+        includes = f'#include "{DEFAULT_HEADER.absolute().as_posix()}"\n'
+        includes += ''.join(f'#include "{inc.absolute().as_posix()}"\n' for inc in self.includes)
+        cpp_file.write_text(f'{includes}\n\n{cpp_code}', 'utf-8')
+        return cpp_file
+
+    def cpp_to_exe(self, spk_file: Path, cpp_file: Path, *args) -> Path:
+        output: Path = spk_file.with_suffix('.exe' if system() == 'Windows' else '').absolute()
+        if which('g++') is not None:
+            run(['g++', cpp_file.as_posix(), '-o', output.as_posix(), *args])
+        elif which('clang++') is not None:
+            run(['clang++', cpp_file.as_posix(), '-o', output.as_posix(), *args])
+        else:
+            print(f'{BOLD}{RED}Invalid compiler{RESET}')
+        
+        return output
 
     def condition(self, ctx: SplikitParser.ExprContext) -> Code:
         expr = self.visit(ctx)
@@ -65,12 +74,18 @@ class SplikitCompiler(SplikitVisitor):
 
     def body_to_str(self, ctx: SplikitParser.BodyContext) -> str:
         return '\n'.join(map(lambda x: x.text + ';', self.visit(ctx)))
+    
+    def get_text(self, iterable: list) -> str:
+        return ', '.join(map(lambda x: x.text, iterable))
 
 
     def visitParse(self, ctx: SplikitParser.ParseContext) -> str:
         return '\n'.join(map(lambda x: x.text, [self.visit(stmt) for stmt in ctx.stmt()]))
 
     def visitType(self, ctx: SplikitParser.TypeContext) -> str:
+        if ctx.LBRACK() is not None:
+            return f'array<{ctx.ID(1).getText()}>'
+
         return ctx.getText()
 
     def visitArg(self, ctx: SplikitParser.ArgContext) -> Code:
@@ -156,37 +171,65 @@ class SplikitCompiler(SplikitVisitor):
             condition.type,
             Position(ctx.start.line, ctx.start.column)
         )
+    
+    def visitUseStmt(self, ctx: SplikitParser.UseStmtContext) -> Code:
+        paths = [path.getText()[1:-1] for path in ctx.STRING()]
+        position = Position(ctx.start.line, ctx.start.column)
+        for path in paths:
+            if path in LIBS:
+                header = LIBS[path]
+                self.includes.add(header)
+                lib_info = get_info(header)
+                
+                new_info = {}
+                for k, v in lib_info.items():
+                    if is_type(k, v) or is_function(v):
+                        continue
+
+                    new_info[k] = v
+
+                for _, v in lib_info.items():
+                    if 'function' in v[0].split():
+                        self.env[v[2]] = EnvItem(v[2], v[1], False)
+
+                init_env(self.env, new_info)
+                self.info |= new_info
+            else:
+                position.error_here(f'Unknown library \'{path}\'', self.src)
+
+        return Code('', 'nil', position)
 
     def visitVarAssign(self, ctx: SplikitParser.VarAssignContext) -> Code:
         name = ctx.ID().getText()
+        position = Position(ctx.start.line, ctx.start.column)
+        if ctx.INCREMENT() is not None or ctx.DECREMENT() is not None:
+            op = '++'
+            if ctx.DECREMENT() is not None:
+                op = '--'
+            
+            return Code(name + op, 'int', position)
+        
         expr = self.visit(ctx.expr())
         typ = self.visit(ctx.type_()) if ctx.type_() else expr.type
-        position = Position(ctx.start.line, ctx.start.column)
-        if typ != expr.type:
-            position.error_here(
-                f'Variable (type \'{expr.type}\') does not match annotated type (\'{typ}\')',
-                self.src
-            )
+        if (ctx.ADD() or ctx.SUB() or ctx.MUL() or ctx.DIV() or ctx.MOD()) is not None:
+            op = ctx.ADD() and '+' or ctx.SUB() and '-' or ctx.MUL() and '*' or ctx.DIV() and '/' or\
+                ctx.MOD() and '%'
+            if op == '/' and expr.type == 'int' and self.env[name].type == 'int':
+                return Code(f'{name} = div({name}, {expr.text}).quot', 'int', position)
+            
+            return Code(f'{name} = {self._op_symbol_to_name(op)}({name}, {expr.text})', typ, position)
 
-        if name in self.env and (ctx.CONST() is None or ctx.type_() is None):
+        if name in self.env and ctx.CONST() is None and ctx.type_() is None:
             return Code(f'{name} = {expr.text}', typ, position)
 
-        self.env[name] = EnvItem(name, typ)
-        return Code(f'{"const " if ctx.CONST() else ""}{typ} {name} = {expr.text}', typ, position)
+        is_constant = ctx.CONST() is not None
+        self.env[name] = EnvItem(name, typ, not is_constant)
+        return Code(f'{"const " if is_constant else ""}{typ} {name} = {expr.text}', typ, position)
 
     def visitFuncAssign(self, ctx: SplikitParser.FuncAssignContext) -> Code:
         name = ctx.ID().getText()
-        if self.find_function(name) is not None:
-            Position(ctx.ID().getSymbol().line, ctx.ID().getSymbol().column).error_here(
-                f'Function \'{name}\' is reserved for the compiler', self.src
-            )
-
         params = self.visit(ctx.params()) if ctx.params() else []
         typ = self.visit(ctx.type_()) if ctx.type_() else 'nil'
-        if name == 'main' and typ != 'int':
-            Position(ctx.type_().start.line, ctx.type_().start.column).error_here(
-                'main function must return an int', self.src
-            )
 
         param_dict = {}
         for param in params:
@@ -197,19 +240,19 @@ class SplikitCompiler(SplikitVisitor):
         def f(_, _env: dict, _call_position: Position) -> None:
             pass
 
-        self.env[name] = EnvItem(name, typ, f)
+        self.env[name] = EnvItem(name, typ, False, f)
 
         temp_env = self.env.copy()
         for param in params:
             splitted = param.text.split()
-            self.env[splitted[1]] = EnvItem(splitted[1], splitted[0])
+            self.env[splitted[1]] = EnvItem(splitted[1], splitted[0], False)
 
         body = self.body_to_str(ctx.body())
 
         self.env = temp_env
         inlined = 'inline ' if ctx.INLINE() else ''
         return Code(
-            f"""{inlined}{typ} {name}({", ".join(map(lambda x: x.text, params))}) {{
+            f"""{inlined}{typ} {name}({self.get_text(params)}) {{
 {body}{"\nreturn nullptr;" if typ == 'nil' else ""}
 }}
 """,
@@ -230,22 +273,22 @@ class SplikitCompiler(SplikitVisitor):
         elif ctx.NIL():
             return Code(ctx.getText(), 'nil', position)
         elif ctx.ID():
-            item = self.env.get(ctx.ID().getText())
-            if item is None:
-                position.error_here(f'Undefined object {ctx.ID().getText()}', self.src)
-
-            return Code(ctx.getText(), item.type, position)
+            return Code(ctx.getText(), self.env[ctx.ID().getText()].type, position)
         elif ctx.expr():
             expr = self.visit(ctx.expr())
             expr.text = f'({expr.text})'
             return expr
+        elif ctx.LBRACE():
+            typ = self.visit(ctx.type_())
+            args = self.visit(ctx.args()) if ctx.args() else []
+            return Code(
+                f'new_array<{typ}>({{{self.get_text(args)}}})',
+                f'array<{typ}>', position
+            )
 
     def visitCall(self, ctx: SplikitParser.CallContext) -> Code:
         callee = self.env.get(ctx.ID().getText())
         position = Position(ctx.start.line, ctx.start.column)
-        if callee is None:
-            position.error_here(f'Undefined object {ctx.ID().getText()}', self.src)
-
         args = self.visit(ctx.args()) if ctx.args() else []
         if callee.callable is not None:
             out = callee.callable(self, args, position)
@@ -253,10 +296,13 @@ class SplikitCompiler(SplikitVisitor):
                 return out
 
         return Code(
-            f'{callee.name}({", ".join(map(lambda x: x.text, args))})',
+            f'{callee.name}({self.get_text(args)})',
             callee.type,
             position
         )
+
+    def _op_symbol_to_name(self, op: str) -> str:
+        return list(op_name_to_symbol_map.keys())[list(op_name_to_symbol_map.values()).index(op)]
 
     def visitExpr(self, ctx: SplikitParser.ExprContext) -> Code:
         if ctx.atom():
@@ -265,66 +311,75 @@ class SplikitCompiler(SplikitVisitor):
             return self.visit(ctx.call())
         elif ctx.op:
             left = self.visit(ctx.expr(0))
+            left_type = base_type(left.type)
             right = self.visit(ctx.expr(1))
+            right_type = base_type(right.type)
             op = ctx.op.text
-            position = Position(ctx.op.line, ctx.op.column)
-            info_item = self.info.get((op, (left.type, right.type)))
-            if info_item is None:
-                position.error_here(
-                    f'Invalid operation \'{op}\' on types \'{left.type}\' and \'{right.type}\'',
-                    self.src
-                )
 
-            name = list(op_name_to_symbol_map.keys())[list(op_name_to_symbol_map.values()).index(op)]
-            return Code(
-                f'{name}({left.text}, {right.text})',
-                info_item[1],
-                position
-            )
+            position = Position(ctx.op.line, ctx.op.column)
+            
+            # manually add int divided by int because C++ already has a div(int, int) and it cannot
+            # be overriden
+            if op == '/' and left_type == 'int' and right_type == 'int':
+                return Code(f'div({left.text}, {right.text}).quot', 'int', position)
+            elif left_type == 'any' and right_type == 'any':
+                typ = left.type
+            else:
+                info_item = self.info.get((op, (left_type, right_type)))
+                typ = info_item[1]
+
+            name = self._op_symbol_to_name(op)
+            return Code(f'{name}({left.text}, {right.text})', typ, position)
         elif ctx.NOT():
             left = self.visit(ctx.expr(0))
-            info_item = self.info.get((left.type, ('not_',)))
+            left_type = base_type(left.type)
+            info_item = self.info.get(('!', (left_type,)))
             position = Position(ctx.start.line, ctx.start.column)
             if info_item is None:
-                position.error_here(
-                    f'Invalid operation \'not\' on type \'{left.type}\'',
-                    self.src
+                return Code(
+                    f'!to_bool({left.text})',
+                    'bool',
+                    position
                 )
 
-            return Code(
-                f'not_({left.text})',
-                info_item[1],
-                position
-            )
+            return Code(f'not_({left.text})', info_item[1], position)
         elif ctx.DOT():
             left = self.visit(ctx.expr(0))
+            ltype = left.type
+            if ltype.startswith('array<'):
+                ltype = 'array'
+
             attr = ctx.ID().getText()
-            info_item = self.find_function(f'{left.type}_{attr}')
+            info_item = find_function(self.info, f'{ltype}_{attr}')
             position = Position(ctx.start.line, ctx.start.column)
             if info_item is None:
-                position.error_here(f'\'{left.type}\' has no attribute \'{attr}\'', self.src)
+                position.error_here(f'\'{ltype}\' has no attribute \'{attr}\'', self.src)
 
-            comments = info_item[0].split()
+            # if info_item[2].split(', ')[0].split()[0].startswith('array<') and ltype == 'array':
+
             args = []
-            if 'static' not in comments:
+            if not is_static(info_item):
                 args.append(left)
 
-            if 'property' in comments:
+            if is_property(info_item):
                 return Code(
-                    f'{left.type}_{attr}({", ".join(map(lambda x: x.text, args))})',
+                    f'{ltype}_{attr}({self.get_text(args)})',
                     info_item[1],
                     position
                 )
-            elif 'method' in comments:
+            elif is_method(info_item):
                 args.extend(self.visit(ctx.args()) if ctx.args() else [])
                 params_dict = {}
                 for param in info_item[3].split(', '):
+                    if param == '':
+                        continue
+
                     splitted = param.split()
                     params_dict[splitted[1]] = {'type': {splitted[0]}}
 
                 verify_params(args, params_dict, self, position)
                 return Code(
-                    f'{left.type}_{attr}({", ".join(map(lambda x: x.text, args))})',
+                    f'{ltype}_{attr}({self.get_text(args)})',
                     info_item[1],
                     position
                 )

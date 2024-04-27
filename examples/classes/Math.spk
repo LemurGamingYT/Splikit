@@ -1,0 +1,9 @@
+func main() -> int {
+    print(Math.pi)
+    print(Math.sin(10.0))
+    print(Math.sqrt(16.0))
+    print(Math.round(52.5))
+    print(Math.pow(10.0, 10.0))
+
+    return 0
+}

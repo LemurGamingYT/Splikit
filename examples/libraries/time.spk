@@ -1,0 +1,8 @@
+use "time"
+
+func main() -> int {
+    sleep(2000)
+    print("The program went to sleep for 2 seconds")
+    print("Now the time is " + formatted_time())
+    return 0
+}

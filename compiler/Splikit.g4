@@ -2,20 +2,31 @@ grammar Splikit;
 
 parse: stmt* EOF;
 
-type: ID;
+type: ID (LBRACK ID RBRACK)?;
 
-stmt: varAssign | funcAssign | ifStmt | whileStmt | expr;
+stmt: varAssign | funcAssign | ifStmt | whileStmt | useStmt | expr;
 
 bodyStmts: stmt | RETURN expr;
 body: LBRACE bodyStmts* RBRACE;
 
-ifStmt: IF expr body elseifStmt* elseStmt?;
-elseifStmt: ELSE IF expr body;
+ifStmt
+    : IF expr body elseifStmt* elseStmt?
+    | IF LPAREN expr RPAREN body elseifStmt* elseStmt?
+    ;
+elseifStmt
+    : ELSE IF expr body
+    | ELSE IF LPAREN expr RPAREN body
+    ;
 elseStmt: ELSE body;
 whileStmt: WHILE expr body;
+useStmt: USE STRING (COMMA STRING)*;
 
 funcAssign: INLINE? FUNC ID LPAREN params? RPAREN (RETURNS type)? body;
-varAssign: CONST? type? ID ASSIGN expr;
+varAssign
+    : CONST? type? ID ASSIGN expr
+    | ID (ADD | SUB | MUL | DIV | MOD) ASSIGN expr
+    | ID (INCREMENT | DECREMENT)
+    ;
 
 arg: expr;
 args: arg (COMMA arg)*;
@@ -24,7 +35,7 @@ param: type ID;
 params: param (COMMA param)*;
 
 call: ID LPAREN args? RPAREN;
-atom: INT | FLOAT | STRING | BOOL | NIL | ID | LPAREN expr RPAREN;
+atom: INT | FLOAT | STRING | BOOL | NIL | ID | LPAREN expr RPAREN | type LBRACE args? RBRACE;
 
 expr
     : call
@@ -39,6 +50,7 @@ expr
 
 
 IF: 'if';
+USE: 'use';
 ELSE: 'else';
 FUNC: 'func';
 CONST: 'const';
@@ -53,6 +65,9 @@ STRING: '"' .*? '"' | APOSTROPHE .*? APOSTROPHE;
 BOOL: 'true' | 'false';
 NIL: 'nil';
 ID: [a-zA-Z_][a-zA-Z_0-9]*;
+
+INCREMENT: '++';
+DECREMENT: '--';
 
 ADD: '+';
 SUB: '-';
@@ -76,8 +91,10 @@ LPAREN: '(';
 RPAREN: ')';
 LBRACE: '{';
 RBRACE: '}';
+LBRACK: '[';
+RBRACK: ']';
 RETURNS: '->';
 
 COMMENT: '//' .*? '\n' -> skip;
+MULTILINE: '/*' .*? '*/' -> skip;
 WHITESPACE: [\t\r\n ]+ -> skip;
-

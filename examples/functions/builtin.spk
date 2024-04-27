@@ -3,6 +3,8 @@ func main() -> int {
     print(type(100.5))
     print(type(8))
     print(type(to_string(126)))
+    print("You inputted: " + input("> "))
+    print(range(1, 10))
 
     return 0
 }
