@@ -3,6 +3,10 @@
 
 ---
 
+# v0.0.21
+- Dollar sign string concatenations
+- spkX library (code lexer library)
+
 # v0.0.2
 - Example programs
 - Bug fixes

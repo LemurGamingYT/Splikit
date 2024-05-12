@@ -1,5 +1,5 @@
 func format_response(string outcome, string bot_choice, string user_choice) {
-    print(outcome + ": " + bot_choice + " vs " + user_choice)
+    print($"{outcome}: {bot_choice} vs {user_choice}")
 }
 
 func respond(string bot_choice, string user_choice) {

@@ -63,7 +63,7 @@ string formatted_time() {
     return string(buf);
 }
 
-// function
+// function, single-return((@1@ % 4 == 0 && @1@ % 100 == 0) || (year % 400 == 0))
 bool is_leap_year(int year) {
     return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
 }

@@ -1,0 +1,14 @@
+use "spkX"
+
+
+func main() -> int {
+    lexer = new_lexer("1 + 3")
+    lexer.add_rule("INT", `[0-9]+`)
+    lexer.add_rule("ADD", `\+`)
+    tokens = lexer.tokenize()
+    foreach tok in tokens {
+        print(tok)
+    }
+
+    return 0
+}

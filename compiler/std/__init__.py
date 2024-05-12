@@ -10,7 +10,7 @@ std = Path(__file__).parent.absolute()
 LIBS = {
     'fstream': std / 'fstream.hpp',
     'time': std / 'time.hpp',
-    'ui': std / 'ui.hpp'
+    'spkX': std / 'spkX.hpp',
 }
 
 
@@ -71,30 +71,29 @@ def std_func(params: Union[dict[str: dict], None] = None) -> Callable:
 @std_func({'x': {}})
 def _print(_, env: dict, call_position: Position) -> Code:
     x = env['x']
-    text = x.text
     if x.type != 'string':
-        text = f'repr({text})'
+        code = f'repr({x.text})'
+    else:
+        code = x.text
 
     return Code(
-        f'print({text})',
+        f'print({code})',
         'nil',
         call_position
     )
 
 @std_func({'x': {}})
 def _type(_, env: dict, call_position: Position) -> Code:
-    x = env['x']
     return Code(
-        f'type({x.text})',
+        f'type({env["x"].text})',
         'string',
         call_position
     )
 
 @std_func({'x': {}})
 def _to_string(_, env: dict, call_position: Position) -> Code:
-    x = env['x']
     return Code(
-        f'repr({x.text})',
+        f'repr({env["x"].text})',
         'string',
         call_position
     )

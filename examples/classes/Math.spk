@@ -4,6 +4,8 @@ func main() -> int {
     print(Math.sqrt(16.0))
     print(Math.round(52.5))
     print(Math.pow(10.0, 10.0))
+    print(Math.factorial(5))
+    print(Math.mean(int{5, 20, 99, 102}))
 
     return 0
 }

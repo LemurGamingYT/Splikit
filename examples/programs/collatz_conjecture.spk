@@ -17,7 +17,7 @@ func conjecture(int num) -> int {
 func main() -> int {
     i = 0
     while i < 10 {
-        print("Collatz conjecture for " + to_string(i) + ": " + to_string(conjecture(i)))
+        print($"Collatz conjecture for {i}: {conjecture(i)}")
         i++
     }
 

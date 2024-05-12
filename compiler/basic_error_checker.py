@@ -1,7 +1,11 @@
 from dataclasses import dataclass
+from pprint import pprint
+from pathlib import Path
 
-from compiler.constants import Position, base_type, find_function, EnvItem, add_types, init_env
-from compiler.info import get_info, is_method, is_property, is_function, is_type
+from compiler.info import (
+    get_info, is_method, is_property, is_function, is_type, has_overload
+)
+from compiler.constants import Position, base_type, find_function, EnvItem, init_env
 from compiler.parser.SplikitVisitor import SplikitVisitor
 from compiler.parser.SplikitParser import SplikitParser
 from compiler.std import LIBS
@@ -22,6 +26,12 @@ class BasicErrorChecker(SplikitVisitor):
         self.info = get_info()
         self.env = parent_env
         self.src = src
+    
+    
+    def apply_params(self, params: list[CheckerNode]) -> None:
+        for param in params:
+            self.env[param.name] = EnvItem(param.name, param.checker_node.type, False)
+    
 
     def visitType(self, ctx: SplikitParser.TypeContext) -> str:
         if ctx.LBRACK() is not None:
@@ -38,6 +48,21 @@ class BasicErrorChecker(SplikitVisitor):
     def visitParams(self, ctx: SplikitParser.ParamsContext) -> list[Param]:
         return [self.visit(param) for param in ctx.param()]
     
+    def add_info(self, instance, info: dict) -> None:
+        new_info = {}
+        for k, v in info.items():
+            if is_type(v) or is_function(v):
+                continue
+
+            new_info[k] = v
+
+        for _, v in info.items():
+            if is_function(v):
+                instance.env[v.name] = EnvItem(v.name, v.return_type, False)
+
+        init_env(instance.env, new_info)
+        instance.info |= new_info
+    
     def visitUseStmt(self, ctx: SplikitParser.UseStmtContext) -> CheckerNode:
         paths = [path.getText()[1:-1] for path in ctx.STRING()]
         position = Position(ctx.start.line, ctx.start.column)
@@ -45,20 +70,7 @@ class BasicErrorChecker(SplikitVisitor):
             if path in LIBS:
                 header = LIBS[path]
                 lib_info = get_info(header)
-                
-                new_info = {}
-                for k, v in lib_info.items():
-                    if is_type(k, v) or is_function(v):
-                        continue
-
-                    new_info[k] = v
-
-                for _, v in lib_info.items():
-                    if 'function' in v[0].split():
-                        self.env[v[2]] = EnvItem(v[2], v[1], False)
-
-                init_env(self.env, new_info)
-                self.info |= new_info
+                self.add_info(self, lib_info)
             else:
                 position.error_here(f'Unknown library \'{path}\'', self.src)
 
@@ -128,8 +140,7 @@ class BasicErrorChecker(SplikitVisitor):
 
         temp_env = self.env.copy()
         params = self.visit(ctx.params()) if ctx.params() else []
-        for param in params:
-            self.env[param.name] = EnvItem(param.name, param.checker_node.type, False)
+        self.apply_params(params)
 
         self.visit(ctx.body())
 
@@ -151,7 +162,7 @@ class BasicErrorChecker(SplikitVisitor):
             if ctx.ID().getText() in self.env:
                 return CheckerNode(self.env[ctx.ID().getText()].type)
             else:
-                Position(ctx.ID().getSymbol().line, ctx.ID().getSymbol().column).error_here(
+                Position(ctx.start.line, ctx.start.column).error_here(
                     f'Undefined object \'{ctx.ID().getText()}\'', self.src
                 )
         elif ctx.expr() is not None:
@@ -167,6 +178,8 @@ class BasicErrorChecker(SplikitVisitor):
                     )
 
             return CheckerNode(f'array<{typ}>')
+        elif ctx.REGEX() is not None:
+            return CheckerNode('regex')
     
     def visitCall(self, ctx: SplikitParser.CallContext) -> CheckerNode:
         name = ctx.ID().getText()
@@ -181,6 +194,13 @@ class BasicErrorChecker(SplikitVisitor):
             return self.visit(ctx.atom())
         elif ctx.call() is not None:
             return self.visit(ctx.call())
+        elif ctx.SUB() is not None:
+            expr = self.visit(ctx.expr(0))
+            position = Position(ctx.start.line, ctx.start.column)
+            if expr.type not in {'int', 'float'}:
+                position.error_here(f'Invalid type \'{expr.type}\' for unary \'-\'', self.src)
+            
+            return CheckerNode(expr.type)
         elif ctx.op is not None:
             left = self.visit(ctx.expr(0))
             right = self.visit(ctx.expr(1))
@@ -191,29 +211,29 @@ class BasicErrorChecker(SplikitVisitor):
                 position.info_here(f'any + any could end up in an error', self.src)
                 typ = left.type
             else:
-                info_item = self.info.get((op, (left.type, right.type)))
+                info_item = find_function(self.info, op)
                 if info_item is None:
                     position.error_here(
                         f'Invalid operation \'{op}\' on types \'{left.type}\' and \'{right.type}\'',
                         self.src
                     )
                 
-                typ = info_item[1]
+                typ = info_item.return_type
             
             return CheckerNode(typ)
         elif ctx.NOT() is not None:
             left = self.visit(ctx.expr(0))
-            info_item = self.info.get(('!', (left.type,)))
+            info_item = find_function(self.info, '!')
             position = Position(ctx.start.line, ctx.start.column)
-            if info_item is None:
+            if info_item is None or not has_overload(info_item, [left.type]):
                 position.info_here(
                     f'\'{left.type}\' has no operation \'not\', inverting to_bool({left.type})',
                     self.src
                 )
                 
                 return CheckerNode('bool')
-            
-            return CheckerNode(info_item[1])
+
+            return CheckerNode(info_item.return_type)
         elif ctx.DOT() is not None:
             left = self.visit(ctx.expr(0))
             ltype = left.type
@@ -227,6 +247,6 @@ class BasicErrorChecker(SplikitVisitor):
                 position.error_here(f'\'{ltype}\' has no attribute \'{attr}\'', self.src)
             
             if is_property(info_item) or is_method(info_item):
-                return CheckerNode(info_item[1])
+                return CheckerNode(info_item.return_type)
             else:
                 position.error_here(f'\'{attr}\' is an invalid attribute', self.src)

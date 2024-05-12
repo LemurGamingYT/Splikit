@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from sys import exit as sys_exit
 from argparse import Namespace
 
-from compiler.info import is_type
+from compiler.info import is_type, InfoFunc
 
 
 RED = '\033[31m'
@@ -16,16 +16,16 @@ def info(args: Namespace, msg: str) -> None:
     if args.debug:
         print(msg)
 
-def find_function(info: dict, name: str) -> Union[tuple, None]:
+def find_function(info: dict, name: str) -> Union[InfoFunc, None]:
     for func in info.values():
-        if isinstance(func, tuple) and func[2] == name:
+        if func.name == name:
             return func
 
 def add_types(env: dict, info: dict) -> None:
     env.update({
         k: EnvItem(k, k, False)
         for k, v in info.items()
-        if is_type(k, v)
+        if is_type(v)
     })
 
 def init_env(env: dict, info: dict) -> None:
@@ -75,18 +75,25 @@ class Position:
             print(src.splitlines()[self.line - 1])
             print(' ' * self.column + f'{BOLD}{arrow_colour}^{RESET}')
     
+    def _print_caller_info(self) -> None:
+        # raise exception to get the Python traceback
+        raise Exception
+    
     def error_here(self, msg: str, src: Union[str, None] = None) -> NoReturn:
         self._print_src(RED, src)
         print(f'{BOLD}{RED}Error at {self.line}:{self.column}{RESET}: {BOLD}{msg}{RESET}')
+        # self._print_caller_info()
         sys_exit(1)
     
     def warn_here(self, msg: str, src: Union[str, None] = None) -> None:
         self._print_src(YELLOW, src)
         print(f'{BOLD}{YELLOW}Warning at {self.line}:{self.column}{RESET}: {BOLD}{msg}{RESET}')
+        # self._print_caller_info()
     
     def info_here(self, msg: str, src: Union[str, None] = None) -> None:
         self._print_src(BOLD, src)
         print(f'{BOLD}Info at {self.line}:{self.column}{RESET}: {BOLD}{msg}{RESET}')
+        # self._print_caller_info()
 
 @dataclass(slots=True, unsafe_hash=True, eq=False)
 class Code:

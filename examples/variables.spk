@@ -3,5 +3,9 @@ func main() -> int {
     int y = 100
     const z = 1000
     // z = 10000 // Error: Variable 'z' is constant
+    print(x)
+    print(y)
+    print(z)
+
     return 0
 }

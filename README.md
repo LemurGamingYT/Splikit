@@ -71,16 +71,6 @@ x = 50
 test(x)
 print(x) // 1050, 'x' was changed in the function
 ```
-- **String dollar**: String concatentation using the dollar ($) symbol
-```
-x = 50
-print($"My luckiest number is {x}")
-
-// Another reason I see this being useful is importing libraries
-lib = input("What library do you want to import?\n> ")
-use $"{lib}"
-print($"Imported {lib}")
-```
 - **Structs**: Custom types in Splikit. Supported in C++ too meaning it can almost be directly translated into C++.
 ```
 // Create a new struct

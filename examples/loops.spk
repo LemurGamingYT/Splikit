@@ -1,7 +1,7 @@
 func main() -> int {
     i = 0
     while i < ONE_BILLION {
-        i = i + 1
+        i++
     }
 
     return 0

@@ -4,7 +4,7 @@ func main() -> int {
     s3 = "Goodbye"
     s4 = "!"
 
-    print(s1 + " " + s2.lowered)
-    print((s1 + " " + s2.lowered + s4).replace(s1, s3))
+    print($"{s1} {s2.lowered}")
+    print(($"{s1} {s2.lowered}{s4}").replace(s1, s3))
     return 0
 }

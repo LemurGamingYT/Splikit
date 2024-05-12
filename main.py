@@ -3,17 +3,26 @@ from sys import exit as sys_exit
 from subprocess import run
 from pathlib import Path
 
+from compiler.constants import BOLD, RED, RESET
 from compiler import SplikitCompiler
 
 
 def compfile(file: Path, compile_args: list) -> Path:
+    print(f'{BOLD}Compiling {file.name}{RESET}')
+
     compiler = SplikitCompiler()
     cpp_file = compiler.compile(file)
+    print(f'{BOLD}Compiled {file.name} file{RESET}')
     if args.compile:
         out = compiler.cpp_to_exe(file, cpp_file, *compile_args)
-        if args.run:
+        if out.is_file():
+            print(f'{BOLD}Compiled to executable file ({out}){RESET}')
+        else:
+            print(f'{RED}Failed to compile to executable file{RESET}')
+
+        if args.run and out.is_file():
             run([out.as_posix()])
-    
+
     if args.clean:
         file.with_suffix('.cpp').unlink(missing_ok=True)
 
@@ -47,6 +56,10 @@ if __name__ == '__main__':
     
     if args.run and not args.compile:
         print('--run can only be used with --compile')
+        sys_exit(1)
+    
+    if not args.file.exists():
+        print(f'{BOLD}File \'{args.file.as_posix()}\' {RED}not found{RESET}')
         sys_exit(1)
 
     main()

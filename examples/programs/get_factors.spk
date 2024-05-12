@@ -13,6 +13,6 @@ func get_factors(int num) -> array[int] {
 }
 
 func main() -> int {
-    print("Factors of 10: " + to_string(get_factors(10)))
+    print($"Factors of 10: {get_factors(10)}")
     return 0
 }
